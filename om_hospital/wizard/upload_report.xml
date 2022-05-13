@@ -1,0 +1,35 @@
+<odoo>
+    <data>
+        <record id="his_patient_upload_report" model="ir.ui.view">
+            <field name="name">hospital.upload.report.form</field>
+            <field name="model">hospital.upload.report.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Upload" duplicate="0">
+                    <group sring="Upload Reports">
+                        <field name="name" required="1" invisible="1"/>
+                        <field name="attachment_id" required="1" filename="name"/>
+                    </group>
+                    <footer>
+                             <button string ="Submit" type="object" name="action_upload_report_patient" class="oe_highlight"/>
+                             <button string="Cancel" class="btn-default" special="cancel" />
+                     </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_upload_report_patient" model="ir.actions.act_window">
+            <field name="name">Upload Reports</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hospital.upload.report.wizard</field>
+            <field name="view_mode">tree,form</field>
+            <!-- <field name="view_id" ref="his_patient_upload_report"/> -->
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="menu_upload_document"
+            name="Upload Reports"
+            parent="menu_inquiry_appointment"
+            action="action_upload_report_patient"
+            sequence="30"/>
+    </data>
+</odoo>

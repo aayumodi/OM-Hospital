@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+		<record id="action_male_patients" model="ir.actions.act_window">
+            <field name="name">Male Patients</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hospital.patient</field>
+            <field name="view_mode">tree,search,form,kanban</field>
+            <field name="context">{'hide_Gender':1,'hide_parent':1}</field>
+            <field name="domain">[('Gender','=','male')]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first Male Patient!
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="menu_male"
+        		  name="Male Patients"
+            	  parent="menu_patient_root"
+            	  action="action_male_patients"
+            	  sequence="20"/>
+
+        <record id="action_female_patients" model="ir.actions.act_window">
+            <field name="name">Female Patients</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hospital.patient</field>
+            <field name="view_mode">tree,search,form,kanban</field>
+            <field name="context">{'default_Gender':'female','default_note':'New Female Patient','hide_Gender':1,'hide_parent':1}</field>
+            <field name="domain">[('Gender','=','female')]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first Female Patient!
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="menu_female"
+                  name="Female Patients"
+                  parent="menu_patient_root"
+                  action="action_female_patients"
+                  sequence="20"/>
+
+
+</odoo>

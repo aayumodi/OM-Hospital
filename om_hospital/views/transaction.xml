@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		<!-- <record model="ir.actions.act_window" id="account.action_account_payments">
+            <field name="domain">[('journal_id.type','=', 'cash')]</field>
+        </record> -->
+	</data>
+</odoo>

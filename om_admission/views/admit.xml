@@ -1,0 +1,112 @@
+<odoo>
+	<data>
+		<record id='hospital_patient_admit_tree_view' model='ir.ui.view'>
+			<field name='name'>hospital.patient.admit.tree</field>
+			<field name="model">hospital.patient.admit</field>
+			<field name="arch" type="xml">
+				<tree sample="1">
+					<field name="name"/>
+					<field name="patient_id"/>
+					<field name="full_name"/>
+					<field name="admission_date"/>
+					<field name="admitting_doctor_id"/>
+					<field name="category"/>
+				</tree>
+			</field>
+		</record>
+
+		<record id="hospital_patient_admit_form_view" model="ir.ui.view">
+			<field name="name">hospital.patient.admit.form</field>
+			<field name="model">hospital.patient.admit</field>
+			<field name="arch" type="xml">
+				<form>
+					<header>
+						<button name="button_confirm" string="Confirm" states="draft" type="object" class="btn-primary"/>
+						<button name="button_discharge" string="Discharge" states="confirm" type="object" class="btn-primary"/>
+						<field name="state" widget="statusbar" statusbar_visible="draft,confirm,discharge"/>
+					</header>
+					<sheet>
+						<div class="oe_highlight" attrs="{'invisible': [('state','!=','confirm')]}">
+							<div class="badge-primary rounded-circle" style="width: 100px; height: 50px; text-align: center; align-items: center; display: flex; justify-content: center;" >
+								<field name="admission_duration" readonly="1"/>
+							</div>
+						</div>
+						<div class="oe_highlight" attrs="{'invisible': [('state','!=','discharge')]}">
+							<p>Admitted Duration</p>
+							<field name="admission_duration" readonly="1"/>
+						</div>
+						<group string="Patient Details">
+							<group>
+								<field name="name" readonly="1" force_save="1"/>
+								<field name="patient_id" readonly="1"/>
+	            				<field name="full_name" readonly="1"/>
+			                </group>
+			                <group>
+			                    <field name="age" readonly="1"/>
+			                    <field name="gender" readonly="1"/>
+                                <field name="phone_num" readonly="1"/>
+                			</group>
+						</group>
+						<group string="Admission Details">
+							<group>
+	            				<!-- <field name="appoinment_id"  readonly="1" force_save="1"/> -->
+                                <field name="doctor_id" readonly="1"/>
+                                <field name="category" attrs="{'readonly' : [('state','!=', 'draft')]}"/>
+								<field name="admission_date" readonly="1"/>
+							</group>
+							<group>
+								<field name="admitting_doctor_id" required="1" attrs="{'readonly' : [('state','!=', 'draft')]}"/>
+								<field name="amount" force_save="1" readonly="1"/>
+								<!-- <field name="currency_id" force_save="1" readonly="1"/> -->
+			                    <field name="admission_status" readonly="1" force_save="1"/>
+			                    <field name="admission_notes" readonly="1"/>
+							</group>
+						</group>
+						<group string="Discharge Details">
+							<group>
+								<field name="discharge_date" readonly="1" />
+								<field name="reason_discharge" readonly="1" />
+							</group>
+						</group>
+						<field name="patient_admit_ids">
+							<tree editable="bottom">
+								<field name="service"/>
+								<field name="amount"/>
+								<field name="payment_id"/>
+							</tree>
+						</field>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_hospital_admission" model="ir.actions.act_window">
+	        <field name="name">Patient Admission</field>
+	        <field name="type">ir.actions.act_window</field>
+	        <field name="res_model">hospital.patient.admit</field>
+	        <field name="view_mode">tree,form</field>
+	        <field name="domain">[]</field>
+	        <field name="context">{}</field>
+	        <field name="help" type="html">
+	            <p class="o_view_nocontent_smiling_face">
+	                Create your Admission!
+	            </p>
+	        </field>
+	    </record>
+
+	   <!--  <record id="action_create_pharmacy" model="ir.actions.server">
+            <field name="name">Pharmacy Order</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="model_hospital_patient_admit"/>
+            <field name="binding_model_id" ref="model_hospital_patient_admit"/>
+            <field name="state">code</field>
+            <field name="binding_view_types">form</field>
+            <field name="code">
+                if record:
+                    action_values = env.ref('om_hospital.hospital_pharmacy_order_action').sudo().read()[0]
+                    action_values.update({'context': env.context})
+                    action = action_values
+            </field>
+        </record> -->
+	</data>
+</odoo>

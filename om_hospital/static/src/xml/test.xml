@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+   <t  t-name="systray_cloud.myicon">
+        <t t-jquery="li.o_debug_manager" t-operation="before">
+           <li class="new_icon">
+                <!-- <label class="my_icon" title="Current Time"> -->
+                      <!-- <div class="toggle-icon"><i class="fa fa-cloud"                                   -->
+                            <!-- id="fa-icon"/> -->
+                      <!-- </div>               -->
+                  <img class="rounded-circle image_custom" title="Hospital Logo" t-att-src="'/om_hospital/static/src/img/hosp.png'"/>    
+               <!-- </label> -->
+           </li>
+        </t>
+   </t>
+</templates>

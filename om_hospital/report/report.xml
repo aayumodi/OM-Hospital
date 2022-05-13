@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="custom_paperformat_id" model="report.paperformat">
+        <field name="name">Landscape Paper Format</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Landscape</field>
+    </record>
+
+	<record id="report_patients_details" model="ir.actions.report">
+		<field name="name">Patient Details</field>
+		<field name="model">hospital.patient</field>
+		<field name="report_type">qweb-pdf</field>
+		<field name="print_report_name">'Patient details - %s' % (object.name)</field>
+		<field name="report_name">om_hospital.report_patients_details</field>
+		<field name="report_file">om_hospital.report_patients_details</field>
+		<field name="binding_model_id" ref="model_hospital_patient"/>
+		<field name="binding_type">report</field>
+		<field name="paperformat_id" ref="om_hospital.custom_paperformat_id" />
+	</record>
+	
+
+	<record id="report_patients_details_xlsx" model="ir.actions.report">
+		<field name="name">Patient Details Excel</field>
+		<field name="model">hospital.patient</field>
+		<field name="report_type">xlsx</field>
+		<field name="print_report_name">'Patient details - %s' % (object.name)</field>
+		<field name="report_name">om_hospital.report_patients_details_xlsx</field>
+		<field name="report_file">om_hospital.report_patients_details</field>
+		<field name="binding_model_id" ref="model_hospital_patient"/>
+		<field name="binding_type">report</field>
+	</record>
+
+	<record id="action_report_appointment" model="ir.actions.report">
+		<field name="name">Appointment Details</field>
+		<field name="model">appointment.report.wizard</field>
+		<field name="report_type">qweb-pdf</field>
+		<field name="print_report_name">'Patient details - %s' % (object.name)</field>
+		<field name="report_name">om_hospital.report_appointment_details</field>
+		<field name="report_file">om_hospital.report_appointment_details</field>
+		<field name="binding_model_id" ref="model_appointment_report_wizard"/>
+		<field name="binding_type">report</field>
+		<field name="paperformat_id" ref="om_hospital.custom_paperformat_id"/>
+	</record>
+
+
+
+</odoo>

@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+acess_hospital_pharmacy,acess.hospital.pharmacy,model_hospital_pharmacy,,1,1,1,1
+acess_phramacy_order_line,acess.phramacy.order.line,model_phramacy_order_line,,1,1,1,1
+acess_pharmacy_back_order,acess.pharmacy.back.order,model_pharmacy_back_order,,1,1,1,1

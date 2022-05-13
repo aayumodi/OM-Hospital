@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<template id="doctor_page" name="Hospital Doctor">
+		<t t-call="website.layout">
+			<div class="container">
+			<br>
+				 <center><h3>Patients Details</h3></center>
+			</br>
+			<!-- Hello World -->
+			<table class="table table-sm o_main_table">
+				<thread>
+					<tr>
+						<b>
+							<th>Referances</th>
+							<th>Name</th>
+						</b>
+					</tr>
+				</thread>
+				<tbody>
+					<t t-foreach="patient" t-as="patient">
+						<tr>
+							<td><t t-esc="patient.name"/></td>
+							<td><t t-esc="patient.patient_id.name"/></td>
+						</tr>
+					</t>
+				</tbody> 
+			</table>
+			</div>
+		</t>
+	</template>
+</odoo>

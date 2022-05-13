@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+		<record id="hospital_pharmacy_order_form" model="ir.ui.view">
+			<field name="name">pharmacy.order.wizard.form</field>
+			<field name="model">phramacy.order.wizard</field>
+			<field name="arch" type="xml">
+				<form string="Phramacy">
+					<group string="Pharmacy Order">
+						<group>
+							<field name="patient_id" invisible="1"/>
+						</group>
+                            <field name="pharmacy_lines_ids">
+                                <tree editable="bottom">
+                                    <field name="categ_id"/>
+                                    <field name="product_id"/>
+                                    <field name="qty"/>
+                                    <!-- <field name="qty_available"/> -->
+                                    <field name="instruction"/>
+                                    <field name="remark"/>
+                                </tree>
+                            </field>
+					</group>
+                    <group string="Ordered Pharmacy">
+                        <field name="previous_pharmacy_line_ids" nolabel="1" readonly="1">
+                            <tree>
+                                <field name="order_seq"/>
+                                <field name="order_date"/>
+                                <field name="categ_id" style="word-wrap: break-word;
+                                        white-space: normal"/>
+                                <field name="product_id" style="word-wrap: break-word;
+                                        white-space: normal"/>
+                                <field name="qty"/>
+                                <!-- <field name="qty_available"/> -->
+                                <field name="instruction"/>
+                                <!-- <field name="remark"/> -->
+                                <field name="order_by" style="word-wrap: break-word;
+                                        white-space: normal"/>
+                                <field name="order_status"/>
+                            </tree>
+                        </field>
+                    </group>
+				</form>
+                <footer>
+                    <button name="button_submit" string="Submit" class="btn-primary" type="object"/>
+                </footer>
+			</field>
+		</record>
+
+
+		<record id="hospital_pharmacy_order_action" model="ir.actions.act_window">
+            <field name="name">Pharmacy Order</field>
+            <field name="res_model">phramacy.order.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <record id="action_create_pharmacy" model="ir.actions.server">
+            <field name="name">Pharmacy Order</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="model_hospital_appoinment"/>
+            <field name="binding_model_id" ref="model_hospital_appoinment"/>
+            <field name="state">code</field>
+            <field name="binding_view_types">form</field>
+            <field name="code">
+                if record:
+                    action_values = env.ref('om_hospital.hospital_pharmacy_order_action').sudo().read()[0]
+                    action_values.update({'context': env.context})
+                    action = action_values
+            </field>
+        </record>
+    </data>
+</odoo>

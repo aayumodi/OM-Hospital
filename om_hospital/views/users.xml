@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record id="open_balance_history_tree_view" model="ir.ui.view">
+			<field name="name">balance.history.tree</field>
+			<field name="model">balance.history</field>
+			<field name="arch" type="xml">
+				<tree>
+					<field name="request_type"/>
+					<field name="bank_name"/>
+					<field name="iban_num"/>
+					<field name="e_transfer_id"/>
+					<field name="amount"/>
+				</tree>
+			</field>
+		</record>
+
+
+		<record id="open_balance_history_form_view" model="ir.ui.view">
+			<field name="name">balance.history.form</field>
+			<field name="model">balance.history</field>
+			<field name="arch" type="xml">
+				<form>
+					<sheet>
+						<group>
+							<group>
+								<field name="request_type"/>
+								<field name="bank_name"/>
+								<field name="iban_num"/>
+								<field name="e_transfer_id"/>
+							</group>
+							<group>
+								<field name="amount"/>
+								<field name="date_e_transfer"/>
+								<field name="remarks"/>
+								<field name="bank_deposit_slip"/>
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="balance_history_action" model="ir.actions.act_window">
+			<field name="name">Balance History</field>
+			<field name="res_model">balance.history</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+	</data>
+</odoo>

@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+acess_hospital_patient_admit,acess.hospital.patient.admit,model_hospital_patient_admit,,1,1,1,1
+acess_admission_req_cancel_wizard,acess.admission.req.cancel.wizard,model_admission_req_cancel_wizard,,1,1,1,1
+acess_patient_payment_wizard,acess.patient.payment.wizard,model_patient_payment_wizard,,1,1,1,1
+acess_patient_service,acess.patient.service,model_patient_service,,1,1,1,1

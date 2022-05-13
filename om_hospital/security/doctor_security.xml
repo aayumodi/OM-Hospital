@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record model="ir.module.category" id="module_category_hospital">
+		<field name="name">Hospital Managment</field>
+		<field name="description">Category for hospital</field>
+		<field name="sequence">101</field>
+	</record>
+    <record id="group_his_admin" model="res.groups">
+        <field name="name">Admin</field>
+        <field name="category_id" ref="module_category_hospital"/>
+    </record>
+	<record id="group_hospital_doctor" model="res.groups">
+		<field name="name">Doctor</field>
+		<field name="category_id" ref="module_category_hospital"/>
+	</record>
+    <record id="group_patient_partner" model="res.groups">
+        <field name="name">Partner</field>
+        <field name="category_id" ref="module_category_hospital"/>
+    </record>
+	<record id="show_appointment" model="ir.rule">
+        <field name="name">Doctor can show his appointment</field>
+        <field name="model_id" ref="model_hospital_appoinment"/>
+        <field name="groups" eval="[(4, ref('group_hospital_doctor'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+        <field name="domain_force">[('doctor_id.user_id','=',user.id)]</field>
+    </record>
+    <record model="ir.rule" id="show_appointments">
+        <field name="name">Show appointments to admin</field>
+        <field name="model_id" ref="model_hospital_appoinment"/>
+        <field name="groups" eval="[(4, ref('base.group_erp_manager'))]"/>
+        <field name="domain_force">[(1,'=',1)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+	
+</odoo>

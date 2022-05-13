@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<template id="invoice_page" name="Invoice Details">
+		<t t-call="website.layout">
+			<div class="container">
+			<br>
+				 <center><h3>Invoice Details</h3></center>
+			</br>
+			<!-- Hello World -->
+			<table class="table table-bordered">
+				<thread>
+					<tr>
+						<b>
+							<th>Invoice Id</th>
+							<th>invoice Date</th>
+							<th>Untaxed Amount</th>
+							<th>Tax</th>
+							<th>Total</th>
+						</b>
+					</tr>
+				</thread>
+				<tbody>
+					<t t-foreach="inv" t-as="inv">
+						<tr>
+							<td><t t-esc="inv.name"/></td>
+							<td><t t-esc="inv.invoice_date"/></td>
+							<td><t t-esc="inv.amount_untaxed"/></td>
+							<td><t t-esc="inv.amount_tax"/></td>
+							<td><t t-esc="inv.amount_total"/></td>
+						</tr>
+					</t>
+				</tbody> 
+			</table>
+			</div>
+		</t>
+	</template>
+</odoo>
