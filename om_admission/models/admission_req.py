@@ -13,6 +13,7 @@ class HisPatientAdmissionRequest(models.Model):
     admission_note = fields.Char(string='Admission Note')
     reason_for_cancel = fields.Text(string='Reason for Cancel')
     created_on = fields.Date('Created On')
+    hii bro
 
 
 
