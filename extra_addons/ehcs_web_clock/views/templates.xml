@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template>
+    <t t-name="web_clock">
+        <li role="menuitem">
+            <a role="button" title="System Clock" class="btn btn-primary btn-block o_hr_attendance_clock_set" disabled="True" id="submitBtn">
+            </a>
+        </li>
+    </t>
+</template>

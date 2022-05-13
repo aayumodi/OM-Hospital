@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        
+        <record id="view_patient_tree" model="ir.ui.view">
+            <field name="name">hospital.patient.tree</field>
+            <field name="model">hospital.patient</field>
+            <field name="arch" type="xml">
+                <tree sample="1">
+                    <field name="name"/>
+                    <field name="full_name"/>
+                    <!-- <field name="last_name"/> -->
+                    <!-- <field name="resposible_id" invisible="context.get('hide_resposible_id',False)"/> -->
+                    <!-- <field name="parent" invisible="context.get('hide_parent',False)"/> -->
+                    <field name="age"/>
+                    <field name="Gender"/>
+                    <field name="appoinment_count" optional="show"/>
+                    <field name="note" optional="show"/>
+                    <field name="state" optional="show"/>
+                    
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_patient_search" model="ir.ui.view">
+            <field name="name">hospital.patient.search</field>
+            <field name="model">hospital.patient</field>
+            <field name="arch" type="xml">
+                <search string="Patients">
+                    <field name="name"/>
+                    <field name="age"/>
+                    <separator/>
+                    <filter string="Male" name="male" domain="[('Gender', '=', 'male')]"/>
+                    <filter string="Female" name="female" domain="[('Gender', '=', 'female')]"/>
+                    <filter string="Other" name="other" domain="[('Gender', '=', 'other')]"/>
+                    <group expand="1" string="Group By">
+                       <!--  <filter string="Gender" name="Gender" context="{'group_by':'Gender'}"/> -->
+                        <filter string="Patients Name" name="patient_name" context="{'group_by':'name'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="view_patient_form" model="ir.ui.view">
+            <field name="name">hospital.patient.form</field>
+            <field name="model">hospital.patient</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button id="button_create_appointment"  name="%(om_hospital.action_create_appointment)d" string="Create Appointments" class="btn-primary" type="action"/>
+                        <button id="button_doc"  name="%(om_hospital.action_upload_report_patient)d" string="Upload Document" class="btn-primary" type="action"/>
+                        <button id="button_confirm"  name="action_confirm" string="Confirm" class="btn-primary" states="draft" confirm="Are you sure you need to confirm?" type="object"/>
+                        <button id="button_done"  name="action_done" string="Mark As Done" class="btn-primary" type="object" states="confirm" />
+                        <button id="button_draft"  name="action_draft" string="Set To Draft" class="btn-primary" type="object" states="cancel"/>
+                        <button id="button_cancel"  name="action_cancel" string="Cancel" confirm="Are you sure you need to cancel?" type="object" states="draft,done,confirm"/>
+                        <field name="state" widget="statusbar" statusbar_visible= "draft,confirm,done"/>
+                         <!-- options="{'clickable': '1'}" -->
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                             <button name="action_open_appointment" type="object" class="oe_stat_button" icon="fa-calendar">
+                                <div class="o_stat_info">
+                                    <field name="appoinment_count" class="o_stat_value"/>
+                                    <span class="o_stat_text">Appointments</span>
+                                </div>
+                            </button>
+                            <button name="send_msg" string="Whatsapp Message" type="object" class="oe_stat_button" icon="fa-whatsapp"/>
+                            <button name="action_open_document" icon="fa-download" string="View Documents" type="object" class="oe_stat_button"/>
+                        </div>
+                        <field name="image" widget="image" class="oe_avatar" />
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="prefix"/>
+                                <field name="first_name"/>
+                                <field name="last_name" required="1"/>
+                                <field name="full_name" invisible="1"/>
+                                <field name="date_of_birth"/>
+                                <field name="age" readonly="1" force_save="1"/>
+                            </group>
+                            <group>
+                                <field name="Gender" invisible="context.get('hide_Gender',False)" />
+                                <field name="phone"/>
+                                <field name="email"/>
+                                <field name="appoinment_count" invisible="1"/>
+                                <field name="resposible_id" invisible="context.get('hide_resposible_id',False)"/>
+                                <field name="parent" invisible="context.get('hide_parent',False)" />
+                                <!-- <field name="partner_id"/> -->
+                                <field name="note"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Appointments">
+                                <field name="appoinment_ids">
+                                    <tree string="appoinment" editable="top">
+                                        <field name="name"/>
+                                        <field name="date_appointment"/>
+                                        <field name="doctor_id"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Appointments">
+                                <field name="appoinment_ids">
+                                    <tree string="appoinment" editable="top">
+                                        <field name="name"/>
+                                        <field name="date_appointment"/>
+                                        <field name="doctor_id"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Appointments">
+                                <field name="appoinment_ids">
+                                    <tree string="appoinment" editable="top">
+                                        <field name="name"/>
+                                        <field name="date_appointment"/>
+                                        <field name="doctor_id"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_patient_kanban" model="ir.ui.view">
+            <field name="name">hospital.patient.kanban</field>
+            <field name="model">hospital.patient</field>
+            <field name="arch" type="xml">
+                <kanban sample="1" default_order="id asc">
+                    <field name="id"/>
+                    <field name="name"/>
+                    <field name="age"/>
+                    <field name="Gender"/>
+                    <field name="note"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_global_click">
+                                <div class="oe_kanban_details">
+                                    <ul>
+                                        <li>
+                                            Name: <field name="name"/>
+                                        </li>
+                                        <li>
+                                            Age: <field name="age"/>
+                                        </li>
+                                        <li>
+                                            Gender: <field name="Gender"/>
+                                        </li>
+
+                                    </ul>
+                                </div>   
+                                <div class="o_dropdown_kanban dropdown" tabindex="-1">
+                                        <a class="dropdown-toggle o-no-caret btn" data-toggle="dropdown" href="#" role="button" aria-label="Dropdown menu" title="Dropdown menu">
+                                            <span class="fa fa-ellipsis-v"/>
+                                        </a>
+                                        <div class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                            <a t-if="widget.editable" type="edit" class="dropdown-item">Edit</a>
+                                            <a t-if="widget.deletable" type="delete" class="dropdown-item">Delete</a>
+                                            <a class="dropdown-item o_mrp_download">Download</a>
+                                        </div>
+                                </div>   
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="action_hospital_patient" model="ir.actions.act_window">
+            <field name="name">Patients</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hospital.patient</field>
+            <field name="view_mode">tree,search,form,kanban</field>
+            <field name="context">{'search_default_Gender':1,'search_default_female':0,'hide_parent':1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first Patient!
+                </p>
+            </field>
+        </record>
+
+        <record id="action_create_appointments" model="ir.actions.server">
+            <field name="name">Create Appoinmeants</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="model_hospital_patient"/>
+            <field name="binding_model_id" ref="model_hospital_patient"/>
+            <field name="state">code</field>
+            <field name="binding_view_types">form</field>
+            <field name="code">
+                if record:
+                    action_values = env.ref('om_hospital.action_create_appointment').sudo().read()[0]
+                    action_values.update({'context': env.context})
+                    action = action_values
+            </field>
+        </record>
+
+        <record id="action_done_appointments" model="ir.actions.server">
+            <field name="name">Mark As Done</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="model_hospital_patient"/>
+            <field name="binding_model_id" ref="model_hospital_patient"/>
+            <field name="binding_view_types">form</field>
+            <field name="state">code</field>
+            <field name="code">records.action_done()</field>
+        </record>
+
+       <!--  <record id="services_page" model="website.page">
+            <field name="name">Services page</field>
+            <field name="website_published">True</field>
+            <field name="url">/services</field>
+            <field name="view_id" ref="om_hospital.hospital_page"/>
+        </record> -->
+
+    <!-- Top menu item -->
+        <menuitem id="menu_hospital_root"
+            name="Hospital"
+            web_icon="om_hospital,static/src/img/hospital.png"
+            sequence="10"/>
+
+        <menuitem id="menu_patient_root"
+            name="Patient"
+            parent="menu_hospital_root"
+            groups = 'om_hospital.group_his_admin'
+            sequence="20"/>
+
+        <menuitem id="menu_hospital_patient"
+            name="Patients"
+            parent="menu_patient_root"
+            action="action_hospital_patient"
+            sequence="10"/>
+
+        
+
+
+</odoo>

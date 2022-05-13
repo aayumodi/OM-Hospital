@@ -1,0 +1,108 @@
+<odoo>
+	<template id="report_preview_appointment" >
+		<t t-set ="title">Appointment Details Preview</t>
+		<t t-call="web.html_container">
+			<t t-foreach="docs" t-as="doc">
+				<div class="page">
+					<div class="text-center">
+                            <h2>Patient Details</h2>
+                    </div>
+					<table class="table table-sm" style="text-align: left; width: 720px; border-collapse: collapse;"
+                           border="0" cellpadding="0" cellspacing="0" padding="0" margin="0">
+                        <tr margin="0">
+                            <th style="border: 0px ;" class="text-left">MRN :
+                                <span style="font-weight:normal;" t-field="doc.patient_id.name"/>
+                            </th>
+                            <th style="border: 0px ;" class="text-left"/>
+                            <th style="border: 0px ;" class="text-left">Appointment Date :
+                                <span style="font-weight:normal;" t-field="doc.date_appointment"/>
+                            </th>
+                        </tr>
+                        <tr margin="0">
+                            <th style="border: 0px ;" class="text-left">Patient Name :
+                                <span style="font-weight:normal;" t-field="doc.full_name"/>
+                            </th>
+                            <th style="border: 0px ;" class="text-left"/>
+                            <th style="border: 0px ;" class="text-left">Appointment No :
+                                <span style="font-weight:normal;" t-field="doc.name"/>
+                            </th>
+                        </tr>
+                        <tr margin="0">
+                            <th style="border: 0px ;" class="text-left">Age :
+                                <span style="font-weight:normal;" t-field="doc.age"/>
+                            </th>
+                            <th style="border: 0px ;" class="text-left"/>
+                            <th style="border: 0px ;" class="text-left">Gender :
+                                <span style="font-weight:normal;" t-field="doc.Gender"/>
+                            </th>
+                        </tr>
+                        <tr margin="0">
+                            <th style="border: 0px ;" class="text-left">Mobile Num :
+                                <span style="font-weight:normal;" t-field="doc.mobile_number"/>
+                            </th>
+                            <th style="border: 0px ;" class="text-left"/>
+                            <th style="border: 0px ;" class="text-left">Consultant :
+                                <span style="font-weight:normal;" t-field="doc.doctor_id.name"/>
+                            </th>
+                        </tr>
+					</table>
+					<br/>
+					<div class="text-center">
+                            <h2>Appointment Details</h2>
+                    </div>
+                    <table class="table table-sm o_main_table" name="appointment">
+                        <thead>
+                            <tr>
+                                <th name="th_reference" class="text-left">
+                                    <span>Reference</span>
+                                </th>
+                                <th name="th_name" class="text-left">
+                                    <span>Name</span>
+                                </th>
+                                <th name="th_age" class="text-left">
+                                    <span>Age</span>
+                                </th>
+                                <th name="th_date" class="text-left">
+                                    <span>Appointment Date</span>
+                                </th>
+                                <th name="th_date" class="text-left">
+                                    <span>Description</span>
+                                </th>
+                            </tr>   
+                        </thead>
+                        <!-- <t t-set="appoinment_count" t-value="0"/>
+                        <t t-set="i" t-value="doc.patient_id"></t>
+                        <t t-foreach="request.env['hospital.appoinment'].search([('state','=','done'),('patient_id','=',i.id)])" t-as="line">
+                            <t t-set="appoinment_count" t-value="appoinment_count + 1"/>
+                            <tr>
+                                <td>
+                                    <span t-esc="line['name']"/>
+                                </td>
+                                <td>
+                                    <span t-esc="line['full_name']"/>
+                                </td>
+                                <td>
+                                    <span t-esc="line['age']"/>
+                                </td>
+                                <td>
+                                    <span t-esc="line['date_appointment']"/>
+                                </td>
+                                <td>
+                                    <span t-esc="line['note']"/>
+                                </td>
+                            </tr>
+                        </t>
+                            <tr>
+                                <td colspan="4">
+                                    <strong>Total Appointments</strong>
+                                </td>
+                                <td>
+                                    <t t-esc="appoinment_count"/>
+                                </td>
+                            </tr> -->
+                    </table>
+				</div>
+			</t>
+		</t>
+	</template>
+</odoo>

@@ -1,0 +1,580 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Header Extended -->
+    <template id="om_hospital.saned_header_custom" inherit_id="website.layout" name="Header">
+        <xpath expr="//header" position="replace">
+            <head>
+                <link rel="stylesheet" type="text/css" href="/om_hospital/static/src/css/home.css"/>
+                <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"/>
+            </head>
+            <div id="webheader-nav">
+                <nav class="navbar navbar-light navbar-expand-lg ">
+                    <div class="container">
+                        <a class="navbar-brand" href="#">
+                            <img src="/om_hospital/static/src/img/om.png" class="logosizenav"></img>
+                        </a>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav ml-auto">
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="/">Home</a>
+                                </li>
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="/about_us">About Us</a>
+                                </li>
+                                <li class=" signinbtn" groups="base.group_public">
+                                    <a class="" href="/web/login">
+                                        <span>Sign In</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item divider" t-ignore="true" t-if="not user_id._is_public()" />
+                                <li class="nav-item dropdown" t-ignore="true" t-if="not user_id._is_public()">
+                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                                        <b>
+                                            <span t-esc="user_id.sudo().name[:23] + '...' if user_id.sudo().name and len(user_id.sudo().name) &gt; 25 else user_id.sudo().name" />
+                                        </b>
+                                    </a>
+                                    <div class="dropdown-menu js_usermenu" role="menu">
+                                        <a href="/" role="menuitem" class="dropdown-item">My Account</a>
+                                        <a id="o_logout" class="dropdown-item" t-attf-href="/web/session/logout?redirect=/" role="menuitem">Logout</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- Home page extended -->
+    <template id="om_hospital.saned_website_home_page" name="saned_homepage" inherit_id="website.homepage" active="True">
+        <xpath expr="//div[@id='wrap']" position="replace">
+            <data inherit_id="website.homepage">
+                <!-- First div -->
+                <div class="first-section-home">
+                    <div class="container">
+                        <div class="row pt-4 py-3">
+                            <div class="col-md-6 col-xs-12" id="bnrheader-two-content">
+
+                                <div class="cntr-text">
+                                    <div class="container p-md-15 px-sm-20 py-5 slide-up">
+                                        <div class="header-content-text header-one-width mt-3 half-a-border-on-top">
+                                            Who we are</div>
+                                        <div class="website-content pt-300">
+                                            Established in 2021, OM is an India owned platform that connects healthcare providers, patients and payers to enable patient care through a multitude of services such as Command Centre, Chronic Disease Management, Remote Patient Monitoring, Home Care and Telemedicine.
+                                            Automated AI driven care plans and patient assessments enable physicians and patients and help unlock value for all stakeholders.
+                                            <div style="margin-top:-1%;">
+                                               <a href="https://www.instagram.com/sanedhealth/" target="_blank">
+                                                    <img src="/om_hospital/static/src/img/Instagram-Logo.wine.svg" style="width: 15%; margin-left: -15px;"/>
+                                                </a>
+                                               <a href="https://twitter.com/SanedHealth" target="_blank">
+                                                    <img src="/om_hospital/static/src/img/Twitter-Logo.wine.svg" style="width: 15%; margin-left: -20px;"/>
+                                                </a>
+                                                <a href="https://www.linkedin.com/company/saned-health/" target="_blank">
+                                                    <img src="/om_hospital/static/src/img/LinkedIn-Icon-Logo.wine.svg" style="width: 15%; margin-left: -20px;"/>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xs-12 mt-auto mb-auto" id="bnrheader-one-image">
+                                <img src="/om_hospital/static/src/img/bannerheader1.png" class="img-responsive bnr-img1a"></img>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Second div -->
+                <div class="alternet_class">
+                    <div class="container">
+                        <div class="row py-3">
+                            <div class="col-md-6 col-xs-12" id="bnrheader-three-image">
+                                <img src="/acs_website/static/src/img/remotemonitoring_1.svg" class="img-responsive bnr-img1a cntr-text"></img>
+                            </div>
+                            <div class="col-md-6 col-xs-12" id="bnrheader-four-content">
+                                <div class="cntr-text">
+                                    <div class="container p-md-5  px-sm-2 py-5">
+                                        <div class="header-content-text mt-3 half-a-border-on-top header-two-width slide-up">
+                                            Remote Patient Monitoring
+                                </div>
+                                        <div class="website-content pt-3 slide-up">
+                                            The platform’s integration capabilities through smart patient monitoring devices and round-the-clock access to data through the repository, enables better care management by providing better access of care to the patients and data to healthcare professionals, Improving the quality of care, garnering assurance and providing education, support and feedback throughout. 
+                                </div>
+                                        <!-- <div class="mt-3 mb-2">
+                                            <button type="button" class="btn read-more-btn-blue read-more-btn ">Read More</button>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- third div -->
+                <div class="first-section-home">
+                    <div class="container">
+                        <div class="row py-3">
+                            <div class="col-md-6 col-xs-12" id="bnrheader-two-content">
+                                <div class="cntr-text">
+                                    <div class="container p-md-5 px-sm-2 py-5 slide-up">
+                                        <div class="header-content-text header-one-width mt-3 half-a-border-on-top">
+                                            Home Health Care
+                                        </div>
+                                        <div class="website-content pt-3">
+                                            Certified care professionals will get to your doorstep to deliver the care that’s best for you, by conducting at-home assessments.
+                                        </div>
+                                        <!-- <div class="mt-3">
+                                            <button type="button" class="btn read-more-btn-blue read-more-btn ">Read More</button>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xs-12 mt-auto mb-auto" id="bnrheader-one-image">
+                                <img src="/acs_website/static/src/img/homehealthcare_1.svg" class="img-responsive bnr-img1a"></img>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- fourth div -->
+                <div class="alternet_class">
+                    <div class="container">
+                        <div class="row py-3">
+                            <div class="col-md-6 col-xs-12" id="bnrheader-three-image">
+                                <img src="/acs_website/static/src/img/telemedicine2_1.svg" class="img-responsive bnr-img1a cntr-text"></img>
+                            </div>
+                            <div class="col-md-6 col-xs-12" id="bnrheader-four-content">
+                                <div class="cntr-text">
+                                    <div class="container p-md-5  px-sm-2 py-5 slide-up">
+                                        <div class="header-content-text mt-3 half-a-border-on-top header-two-width slide-up">
+                                            Telemedicine
+                                        </div>
+                                        <div class="website-content pt-3">
+                                            You can be connected to Physicians and other health care professionals, at the click of a button who could provide instant video consultations, through OM’s Patient Centric Mobile App. 
+                                        </div>
+                                        <div class="mt-3 mb-2">
+                                            <button type="button" class="btn read-more-btn-blue read-more-btn ">Read More</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fifth div -->
+                <div class="first-section-home">
+                    <div class="container">
+                        <div class="row py-3">
+                            <div class="col-md-6 col-xs-12" id="bnrheader-two-content">
+                                <div class="cntr-text">
+                                    <div class="container p-md-5 px-sm-2 py-5 slide-up">
+                                        <div class="header-content-text header-one-width mt-3 half-a-border-on-top">
+                                            Wearable Device Symptom Trackers
+                                        </div>
+                                        <div class="website-content pt-3">
+                                            Partnering with wearable device companies like Roche™ and iHealth ™calls for valuable inputs into the command centre, which enables continuous tracking of health and assesses the need for care, at any given instant.
+                                        </div>
+                                        <!-- <div class="mt-3">
+                                            <button type="button" class="btn read-more-btn-blue read-more-btn ">Read More</button>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xs-12 mt-auto mb-auto" id="bnrheader-one-image">
+                                <img src="/acs_website/static/src/img/wearabledevice_1.svg" class="img-responsive bnr-img1a"></img>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--six div-->
+                <div class="">
+                    <div class=" gray-bg-section  pt-3 pb-5">
+                        <div class="container row equal pad-box p-sm-3 ml-auto mr-auto">
+                            <div class="col-lg-4 col-md-6 col-sm-12 col-12 d-flex pb-3 ">
+                                <div class="cntr-text pt-5 ">
+                                    <div class="container px-md-5 px-sm-2">
+                                        <div class="header-content-text mt-3 half-a-border-on-top">
+                                            Command Centre 
+                                            Functionalities
+                                        </div>
+                                        <div class="website-content-sm sm-text-content pt-3">
+                                            OM health platform employs a bi directional flow of data where your health information is available at your fingertips and you are connected to healthcare professionals 24x7.</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 col-sm-12 col-12 d-flex pb-5">
+                                <div class="card-wrap">
+                                    <div class="cntr-text card card-body shadow-box child pt-5 bnr-img1a">
+                                        <div class="container ">
+                                            <div class="p-0">
+                                                <div class="center-text pt-1">
+                                                    <img src="/acs_website/static/src/img/consultation.png" class="icon-img-set"></img>
+                                                </div>
+                                                <div class="header-content-sm-text mt-5 half-a-border-on-top w-75">
+                                                    Clinical Decision Support System
+                                                </div>
+                                                <div class="website-content-sm  pt-3 sm-text-content">
+                                                    The Clinical Decision Support System will be necessary to ensure error-free reporting and promote accuracy of available data. .</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 col-sm-12 col-12 d-flex pb-5">
+                                <div class="card-wrap">
+                                    <div class="cntr-text card card-body shadow-box child pt-5 bnr-img1a">
+                                        <div class="container ">
+                                            <div class=" p-0">
+                                                <div class="center-text pt-1">
+                                                    <img src="/acs_website/static/src/img/physician.png" class="icon-img-set"></img>
+                                                </div>
+                                                <div class="header-content-sm-text mt-5 half-a-border-on-top w-75">
+                                                    IBM Case Manager
+                                                </div>
+                                                <div class="website-content-sm  pt-3 sm-text-content">
+                                                    OM’s Integration with IBM’s Case Manager provides opportunity to streamline care for patient’s suffering from chronic illnesses such as Diabetes.               </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 col-sm-12 col-12 d-flex pb-5">
+                                <div class="card-wrap">
+                                    <div class="cntr-text card card-body shadow-box child pt-5 bnr-img1a">
+                                        <div class="container ">
+                                            <div class=" p-0">
+                                                <div class="center-text pt-1">
+                                                    <img src="/acs_website/static/src/img/pharmacyonline.png" class="icon-img-set"></img>
+                                                </div>
+                                                <div class="header-content-sm-text mt-5 half-a-border-on-top w-75">
+                                                    OM Mobile App
+                                                </div>
+                                                <div class="website-content-sm  pt-3 sm-text-content">
+                                                    The OM Mobile Application, enhances a seamless communication channel between patient and care providers to provide immediate care, at the fingertips. </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 col-sm-12 col-12 d-flex pb-5">
+                                <div class="card-wrap">
+                                    <div class="cntr-text card card-body shadow-box child pt-5 bnr-img1a">
+                                        <div class="container">
+                                            <div class=" p-0">
+                                                <div class="center-text pt-1">
+                                                    <img src="/acs_website/static/src/img/hospitalic.png" class="icon-img-set"></img>
+                                                </div>
+                                                <div class="header-content-sm-text mt-5 half-a-border-on-top w-75">
+                                                    Home Health Care
+                                                </div>
+                                                <div class="website-content-sm  pt-3 sm-text-content">
+                                                    Enables coordinated and comprehensive patient-centric care, from the comfort of the patient’s home.              </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 col-sm-12 col-12 d-flex pb-5">
+                                <div class="card-wrap">
+                                    <div class="cntr-text card card-body shadow-box child pt-5 bnr-img1a">
+                                        <div class="container ">
+                                            <div class="p-0">
+                                                <div class="center-text pt-1">
+                                                    <img src="/acs_website/static/src/img/wearable_ic.svg" class="icon-img-set"></img>
+                                                </div>
+                                                <div class="header-content-sm-text mt-5 half-a-border-on-top w-75">
+                                                    Wearable Devices
+                                                </div>
+                                                <div class="website-content-sm  pt-3 sm-text-content">
+                                                    Wearable device integration, promotes continuous monitoring of patient symptoms.                
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--section four-->
+                <div class="row mt-sm-3">
+                    <div class="bg-bluegreen">
+                        <div class="row p-0 m-0 green-blue-hght container ml-auto mr-auto">
+                            <div class="col-md-6 col-xs-12">
+                                <div class="cntr-text">
+                                    <div class="conatiner px-md-5  px-sm-3 py-5">
+                                        <div class="header-content-text-white pb-4  ">
+                                            The care you need. The compassion you deserve.
+                                        </div>
+                                        <div class="mt-3">
+                                            <a href="/contactus" type="button" class="btn read-more-btn-white read-more-btn ">Contact Us</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <img src="/om_hospital/static/src/img/girl.png" class="img-responsive girl-img"></img>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </data>
+        </xpath>
+    </template>
+
+    <!-- Footer layout extended-->
+    <template id="saned_footer_custom" inherit_id="website.layout" name="Footer">
+        <xpath expr="//div[@id='footer']" position="replace">
+            <div class="" id="ftr">
+                <div class="container row ml-auto mr-auto">
+                    <div class="col-md-4 col-sm-12 pb-md-5 p-sm-3">
+                        <div class="container p-md-5  px-sm-2 padbtm padtop">
+                            <div class="pt-3">
+                                <img src="/om_hospital/static/src/img/om.png" class="logosizenav padtopfirst"></img>
+                            </div>
+                            <div class="pt-3 ftr-text-content ">In OM, we aim to provide you with an Ecosystem that will help you manage, monitor and control your business within a smart and efficient environment.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-12 pb-md-5 p-sm-3">
+                        <div class="container p-md-3 p-sm-2">
+                            <div class="ftr-title pt-5 padbtm padtop">
+                                Our Products &amp; Services
+                            </div>
+                            <div class="green-txt ftr-text-content">
+                                <a class="nav-link" href="/">Home</a>
+                            </div>
+                            <div class="green-txt ftr-text-content">
+                                <a class="nav-link" href="/contactus">About Us</a>
+                            </div>
+                            <div class="green-txt ftr-text-content">
+                                <a class="nav-link" href="/contactus">Contact Us</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-12 pb-md-5 p-sm-3">
+                        <div class="container p-md-3 p-sm-2">
+                            <div class="ftr-title pt-5 padbtm-title padtop">
+                          Connect with us
+                        </div>
+                            <div class="">
+                                <i class="fa fa-phone"></i>
+                                <span class="ftr-text-content contact-pad-left">+966114808654</span>
+                            </div>
+                            <div class="pt-2">
+                                <i class="fa fa-envelope"></i>
+                                <span class="ftr-text-content contact-pad-left">Info@OMhealth.com</span>
+                            </div>
+                        </div>
+                        <div style="margin-top: -8%;">
+                           <a href="https://play.google.com/store/apps/details?id=com.obeikan.health" target="_blank">
+                                <img src="/om_hospital/static/src/img/google-play-badge.png" style="width: 35%; margin-left: -15px;"/>
+                            </a>
+                            <a href="https://apps.apple.com/sa/app/saned-health/id1583962496" target="_blank">
+                                <img src="/om_hospital/static/src/img/download-on-the-app-store-apple-logo-svgrepo-com.svg" style="width: 32%; margin-left: -13px;"/>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- sign in and signup page extended -->
+    <template id="saned_website_signin_page" name="saned_signin_page" inherit_id="web.login" active="True">
+        <xpath expr="//t/form" position="replace">
+            <div class="container-fluid">
+                <div class="row pt-5 pb-5">
+                    <div class="shadow-box signinup-form-box " id="signinsignupfrm">
+                        <div class="row">
+                            <div class="col-md-6 col-12 blue-btm-ptrn blue-main">
+                                <div class="blue-circle"></div>
+                                <div class="img-left-form">
+                                    <img src="/acs_website/static/src/img/doctorsignin.png"></img>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-12 pd-lft-zero ">
+                                <div class="white-bg-form">
+                                    <div class="form-wrap ">
+                                        <div class="tabs-form">
+                                            <h3 class="login-tab">
+                                                <a class="active" href="#login-tab-content">Sign In</a>
+                                            </h3>
+                                            <h3 class="signup-tab">
+                                                <a href="#signup-tab-content">Sign Up</a>
+                                            </h3>
+                                        </div>
+                                        <!--.tabs-->
+                                        <div class="tabs-content">
+                                            <div id="signup-tab-content">
+                                                <form class="signup-form" role="form" method="post" t-if="not message" t-attf-action="/web/signup" onsubmit="this.action = this.action + location.hash">
+                                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                                                    <label class="input-label">User Name</label>
+                                                    <input type="text" class="input" name="name" id="name" t-att-value="name" autocomplete="off" placeholder="" autofocus="autofocus" autocapitalize="off" required="required" t-att-readonly="'readonly' if only_passwords else None" t-att-autofocus="'autofocus' if login and not only_passwords else None" />
+                                                    <label class="input-label">Email</label>
+                                                    <input type="text" class="input" name="login" t-att-value="login" id="login" autocomplete="off" autofocus="autofocus" placeholder="" autocapitalize="off" required="required" t-att-readonly="'readonly' if only_passwords else None" />
+                                                    <label class="input-label">Password</label>
+                                                    <input type="password" name="password" class="input" id="password" required="required" autocomplete="off" placeholder="" t-att-autofocus="'autofocus' if only_passwords else None" />
+                                                    <label class="input-label">Confirm Password</label>
+                                                    <input type="password" name="confirm_password" class="input" id="confirm_password" autocomplete="off" placeholder="" required="required" />
+                                                    <p class="alert alert-danger" t-if="error" role="alert">
+                                                        <t t-esc="error" />
+                                                    </p>
+                                                    <input type="hidden" name="redirect" t-att-value="redirect" />
+                                                    <input type="hidden" name="token" t-att-value="token" />
+                                                    <input type="submit" class="button signup-btn mt-3" value="Sign Up" />
+                                                </form>
+                                                <!--.login-form-->
+                                                <div class="help-text">
+                                                    <div class="form-link-section">
+                                                        <p>Don't have an account ? </p>
+                                                        <a href="#" class="signin-link" id="open-signin">Sign In</a>
+                                                    </div>
+                                                    <!-- <p><a href="#">Terms of service</a></p> -->
+                                                </div> <!--.help-text-->
+                                            </div>
+                                            <!--.signup-tab-content-->
+                                            <div id="login-tab-content" class="active">
+                                                <form class="login-form" role="form" t-attf-action="/web/login" method="post" onsubmit="this.action = this.action + location.hash">
+                                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                                                    <label class="input-label">Email</label>
+                                                    <input type="text" class="input" id="login" name="login" autocomplete="off" t-att-value="login" required="required" placeholder="" autofocus="autofocus" autocapitalize="off" />
+                                                    <label class="input-label">Password</label>
+                                                    <input type="password" class="input" id="password" name="password" required="required" autocomplete="off" t-att-autofocus="'autofocus' if login else None" placeholder="" maxlength="4096" />
+                                                    <div>
+                                                        <div class="custom-control custom-checkbox pt-4 pb-4">
+                                                            <input type="checkbox" class="custom-control-input" id="customCheckBox1" />
+                                                            <label class="custom-control-label" for="customCheckBox1">Remember me</label>
+                                                            <a href="/web/reset_password?" class="remember-me-text ml-auto reset-pass">Reset OM Password</a>
+                                                        </div>
+                                                    </div>
+                                                    <p class="alert alert-danger" t-if="error" role="alert">
+                                                        <t t-esc="error" />
+                                                    </p>
+                                                    <p class="alert alert-success" t-if="message" role="status">
+                                                        <t t-esc="message" />
+                                                    </p>
+                                                    <input type="hidden" name="redirect" t-att-value="redirect" />
+                                                    <input type="submit" class="button" value="Login" />
+                                                </form> <!--.login-form-->
+                                                <div class="help-text">
+                                                    <div class="form-link-section">
+                                                        <p>Already have an account ? </p>
+                                                        <a href="#" class="signin-link" id="open-signup">Sign Up</a>
+                                                    </div>
+                                                </div> <!--.help-text-->
+                                            </div> <!--.login-tab-content-->
+                                        </div> <!--.tabs-content-->
+                                    </div> <!--.form-wrap-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+    <!-- contactus page extended -->
+    <template id="saned_website_contactus_page" name="saned_homepage" inherit_id="website.contactus" active="True">
+        <xpath expr="//div[@id='wrap']" position="replace">
+            <div class="cnt-main">
+                <div class="first-section-home">
+                    <div class="green-circle-bg-contact" id="contact-frm">
+                        <div class="row pt-5 pb-5 pl-md-0 pr-md-0 pl-5 pr-5">
+                            <div class="shadow-box signinup-form-box " id="signinsignupfrm">
+                                <div class="row">
+                                    <div class="col-md-4 col-12 blue-btm-ptrn blue-main-contact verticl-md-tbl">
+                                        <div class="verticl-md-tbl-child">
+                                            <div class="blue-circle"></div>
+                                            <div class="white-text-header contact-header pl-md-5">Get in touch!</div>
+                                            <div class="pl-md-5 pl-sm-2 pt-3 sm-white-txt-contact">
+                                                    Feel free to contact us on your queries and we will get back to you soon as possible . 
+                                                </div>
+                                            <div class="d-flex pl-md-5 pl-sm-2 pt-4">
+                                                <div class="pr-3">
+                                                    <img src="/acs_website/static/src/img/mobile_ic_contact.svg" class="contact-ic"></img>
+                                                </div>
+                                                <div class="contact-text-white contact-div-portion">+966(11)4808654</div>
+                                            </div>
+                                            <div class="d-flex pl-md-5 pl-sm-2 pt-4">
+                                                <div class="pr-3">
+                                                    <img src="/acs_website/static/src/img/mobile_ic_mail.svg" class="contact-ic"></img>
+                                                </div>
+                                                <div class="contact-text-white contact-div-portion">Info@OMhealth.com</div>
+                                            </div>
+                                            <div class="d-flex pl-md-5 pl-sm-2 pt-4">
+                                                <div class="pr-3">
+                                                    <img src="/acs_website/static/src/img/mobile_ic_hospital.svg" class="contact-ic"></img>
+                                                </div>
+                                                <div class="contact-text-white contact-div-portion">Tulip Tower, Mezzanine Floor P.O. Box 67622 
+                                                    Riyadh 11517, Saudi Arabia</div>
+                                            </div>
+                                        </div>
+                                        <!-- <img src="./assets/images/doctorsignin.png" > -->
+                                    </div>
+                                    <div class="col-md-8 col-12 pd-lft-zero contact-right-frm ">
+                                        <div class="white-bg-form-contact">
+                                            <div class="form-wrap ">
+                                                <div class="container p-md-5 p-sm-2 p-4">
+                                                    <div class="contact-us-title pb-5">Contact Us</div>
+                                                    <div id="">
+                                                        <form id="contactus_form" class="s_website_form" t-ignore="true" action="/website_form/" method="post" data-model_name="crm.lead" enctype="multipart/form-data" data-success_page="/contactus-thank-you">
+                                                            <div class="row">
+                                                                <div class="col-md-6 col-12">
+                                                                    <label class="input-label">First Name</label>
+                                                                    <input type="text" class="input" id="first_name" autocomplete="off" placeholder="" name="name" required="required"/>
+                                                                </div>
+                                                                <div class="col-md-6 col-12">
+                                                                    <label class="input-label">Last Name</label>
+                                                                    <input type="text" class="input" id="last_name" autocomplete="off" placeholder="" name="lst_name" required=""/>
+                                                                </div>
+                                                                <div class="col-md-6 col-12">
+                                                                    <label class="input-label">Email</label>
+                                                                    <input type="email" class="input" id="user_email" autocomplete="off" placeholder="" name="email_from" required=""/>
+                                                                </div>
+                                                                <div class="col-md-6 col-12">
+                                                                    <label class="input-label">Phone</label>
+                                                                    <input type="phone" class="input" id="user_phone" autocomplete="off" placeholder="" name="Phone"/>
+                                                                </div>
+                                                                <div class="col-12">
+                                                                    <label class="input-label-blue">Have Something to tell us ?</label>
+                                                                    <textarea class="form-control chngpc o_website_form_input" id="exampleTextarea" name="Description" required="" rows="3" placeholder="Write message here ….."></textarea>
+                                                                </div>
+                                                                <input type="hidden" class="input" name="email_to" t-att-value="res_company.email"/>
+                                                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                                                                <!-- <div class="col-md-6 col-12">
+                                                                    <input type="submit" class="button signup-btn mt-3" value="Send Message"/>
+                                                                </div> -->
+                                                                <div class="col-md-6 col-12">
+                                                                    <a href="#" id="contact_submit" class="btn btn-sm form-control rounded-circle btn-lg mt40 o_website_form_send cnt_btn_id">Send</a>
+                                                                    <span id="o_website_form_result"></span>
+                                                                </div>
+                                                            </div>
+                                                        </form> <!--.login-form-->
+                                                    </div> <!--.signup-tab-content-->
+                                                </div> <!--.tabs-content-->
+                                            </div> <!--.form-wrap-->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>

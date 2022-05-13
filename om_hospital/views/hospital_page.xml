@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+   <!--  <template id="om_hospital.hospital" inherit_id="website.layout">
+        <xpath expr="//header//nav" position="replace">
+            <head>
+                <link rel="stylesheet" type="text/css" href="/om_hospital/static/src/css/main.css"/>
+                <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"/>
+
+            </head>
+            <body id="page-top">
+                <nav class="navbar navbar-expand-lg navbar-light fixed-top navbar-tan" id="mainNav">
+                    <div class="container">
+                        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+                        data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+                        aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                        <div class="collapse navbar-collapse" id="navbarResponsive">
+                            <ul class="navbar-nav ml-auto my-2 my-lg-0">
+                                <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/">Home</a></li>
+                            <t t-if="request.env.user.login!='public'">
+                            <li class="nav-item"><a class="nav-link js-scroll-trigger" t-attf-href="/load/appointments">Appointments</a></li>
+                            </t>
+                            <li class="nav-item"><a class="nav-link js-scroll-trigger" t-attf-href="/about_us">About Us</a></li>
+                            <li class="nav-item"><a class="nav-link js-scroll-trigger" t-attf-href="#">Departments</a></li>
+                            <li class="nav-item"><a class="nav-link js-scroll-trigger" t-attf-href="#">Doctors</a></li>
+                            <li class="nav-item"><a class="nav-link js-scroll-trigger" t-attf-href="#">Contact Us</a></li>
+
+                            <li class="nav-item border-w display-none"><a class="nav-link js-scroll-trigger" t-attf-href="#">MAKE AN APPOINMENT</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+                <section class="who_we_are">
+                    <div class="container">
+                      <div class="row ">
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <img t-att-src="'/om_hospital/static/src/img/home_hero.jpg'" style="width: 100px; height: 100px;" alt="" />
+                        </div>
+
+                      </div>
+                    </div>
+                </section>
+            </body>
+        </xpath>
+    </template> -->
+
+
+</odoo>

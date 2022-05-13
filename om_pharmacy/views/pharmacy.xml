@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="view_pharmacy_tree" model="ir.ui.view">
+        <field name="name">hospital.pharmacy.tree</field>
+        <field name="model">hospital.pharmacy</field>
+        <field name="arch" type="xml">
+            <tree sample="1" multi_edit="1" create="0">
+                <field name="name"/>
+                <field name="patient_id"/>
+                <field name="age"/>
+                <field name="gender" optional="show"/>
+                <field name="phone_num"/>
+                <field name="order_date" optional="show"/>
+                <!-- <field name="state" optional="show"/> -->
+            </tree>
+        </field>
+    </record>
+    <record id="view_pharmacy_form" model="ir.ui.view">
+            <field name="name">hospital.pharmacy.form</field>
+            <field name="model">hospital.pharmacy</field>
+            <field name="arch" type="xml">
+                <form create ="0">
+                    <header>
+                        <button name="btn_purchase" states='draft' type="object" class="oe_highlight" string="Purchase"/>
+                        <button name="btn_cancel" states='draft' type="object" class="oe_highlight" string="Reject"/>
+                        <button name="open_pharmacy_invoice" string="Payment" class="oe_highlight" type="object" states="purchase"/>   
+                        <field name="state" widget="statusbar" statusbar_visible="draft,purchase,cancel"/>
+                    </header>
+                	<sheet>
+                		<div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1" force_save="1" />
+                            </h1>
+                        </div>
+                		<group>
+                			<group>
+                                <field name="invoice_id" readonly="1"/>
+                                <field name="patient_id" readonly="1"/>
+                				<field name="full_name" readonly="1"/>
+                				<field name="appoinment_id"  readonly="1"/>
+			                    <field name="age" readonly="1"/>
+                			</group>
+                			<group>
+			                    <field name="gender" optional="show"/>
+                                <field name="phone_num"/>
+                                <field name="doctor_id" readonly="1"/>
+                                <field name="order_by" readonly="1"/>
+                    			<field name="order_date" readonly="1"/>
+                                <field name="purchase_date" readonly="1" attrs="{'invisible': [('purchase_date', '=',False)]}"/>
+                                <field name="back_order_ref_id" readonly="1" attrs="{'invisible': [('back_order_ref_id', '=',False)]}"/>
+                			</group>
+                		</group>
+                        <notebook>
+                            <page string="Pharmacy Line">
+                                <field name="pharmacy_line_ids" create="0">
+                                    <tree editable="bottom">
+                                        <field name="categ_id" readonly="1" style="width:250px; word-wrap: break-word;
+                                        white-space: normal"/>
+                                        <field name="product_id" readonly="1" style="width:250px; word-wrap: break-word;
+                                        white-space: normal"/>
+                                        <field name="qty" readonly="1" style="width:150px;"/>
+                                        <field name="purchase_qty" style="width:150px;"/>
+                                        <field name="tax_ids" widget="many2many_tags" style="width:200px;"/>
+                                        <field name="amount" readonly="1" />
+                                        <field name="total_amt" readonly="1" force_save="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                        <group class="oe_subtotal_footer oe_right">
+                            <field name="rounding_amt"/>
+                        </group>
+                	</sheet>
+                </form>
+            </field>
+    </record>
+    <record id="action_hospital_pharmacy" model="ir.actions.act_window">
+        <field name="name">Pharmacy</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hospital.pharmacy</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('state','=','draft')]</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Pharmacy!
+            </p>
+        </field>
+    </record>
+
+    <record id="action_hospital_done_pharmacy" model='ir.actions.act_window'>
+        <field name='name'>Purchased Pharmacy</field>
+        <field name="res_model">hospital.pharmacy</field>
+        <field name='type'>ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('state','=','purchase')]</field>
+        <field name='context'>{}</field>
+    </record>
+
+    <record id="action_hospital_cancel_pharmacy" model='ir.actions.act_window'>
+        <field name='name'>Cancel Pharmacy</field>
+        <field name="res_model">hospital.pharmacy</field>
+        <field name='type'>ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('state','=','cancel')]</field>
+        <field name='context'>{}</field>
+    </record>
+
+</odoo>

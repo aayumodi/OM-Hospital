@@ -1,0 +1,200 @@
+<odoo>
+    <template id="report_patients_details">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-set="company" t-value="user.company_id"/>
+                <div class="header" style="border-bottom: 2px solid black !important;">
+                    <div class="row" style="font-family: 'Trebuchet MS', sans-serif;">
+                        <div class="col-5 mb4">
+                            <div t-field="company.partner_id"
+                            t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}'/>
+                        </div>
+                        <div class="col-2 mb4">
+                            <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 80px;" alt="Logo"/>
+                        </div>
+                    </div>
+                </div>
+                <!-- <t t-call="web.external_layout"> -->
+                    <div class="page" style="background-color:#dde5e9 !important;">
+                        <style>
+                            .page {
+                            margin: 10px auto;
+                            height: 100%;
+                            }
+                            .table-bordered {
+                            border: 2px solid black;
+                            }
+                            td {
+                            border: none !important;
+                            }
+                            .token {
+                            font-size: 1.2em;
+                            font-weight:bolder;
+                            }
+                            .table-condensed thead tr th, .table-condensed tbody tr td{
+                                border: 1px solid black !important;
+                                line-height: 30px;
+                            }
+                        </style>
+                        <div class="oe_structure"/>
+                            <div class="text-center" colspan="2">
+                                <h2>Patient Details</h2>
+                            </div>
+                        <div class="row">
+                            <div class="col-xs-8">
+                                <table class="table text-center" style="border: 2px solid black !important;">
+                                    <tr>
+                                        <td width="40%">
+                                            <p style="text-align:center;padding-top:10px;">
+                                                <img t-if="not o.image" t-att-src="'/om_hospital/static/img/avatar.png'" height="140" border="1" width="120"/>
+                                                <img t-if="o.image" t-att-src="'data:image/png;base64,%s' % to_text(o.image)" height="140" border="1" width="120"/>
+                                            </p>
+                                        </td>
+                                        <td width="60%">
+                                            <table class="table table-sm table-bordered">
+                                                <!-- <tr>
+                                                    <td>
+                                                        <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s'%('QR', 'o.name', 200, 200)"/>
+                                                    </td>
+                                                </tr> -->
+                                                <tr>    
+                                                    <td colspan="3" class="text-center">
+                                                        <span t-field="o.name"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <span>
+                                                            <strong>Reference:</strong>
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span>:</span>
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="o.full_name"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>    
+                                                        <span>
+                                                            <strong>Age:</strong>
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span>:</span>
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="o.age"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>    
+                                                        <span>
+                                                            <strong>Gender:</strong>
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span>:</span>
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="o.Gender"/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <br/>
+                        <t t-if="o.appoinment_ids">
+                            <div class="text-center">
+                                <h2> Appointment Details</h2>
+                            </div>
+                            <table class="table-condensed" style="width:100%;" name="appointment">
+                                <thead>
+                                    <tr>
+                                        <th name="th_reference" class="text-left">
+                                            <span>Reference</span>
+                                        </th>
+                                        <th name="th_age" class="text-left">
+                                            <span>Age</span>
+                                        </th>
+                                        <th name="th_doctor" class="text-left">
+                                            <span>Doctor</span>
+                                        </th>
+                                        <th name="th_date" class="text-left">
+                                            <span>Appointment Date</span>
+                                        </th>
+                                        <th name="th_prescription" class="text-left">
+                                            <span>Prescription</span>
+                                        </th>
+                                        <!-- <th name="th_medicine" class="text-left">
+                                            <span>Medicine</span>
+                                        </th> -->
+                                    </tr>   
+                                </thead>
+                                <t t-set="appoinment_count" t-value="0"/>
+                                <t t-foreach="o.appoinment_ids" t-as="line">
+                                    <t t-set="appoinment_count" t-value="appoinment_count + 1"/>
+                                    <tr>
+                                        <td>
+                                            <span t-field="line.name"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.age"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.doctor_id.name"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.date_appointment"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.prescription"/>
+                                        </td>
+                                        <!-- <td>
+                                            <span t-field="line.prescription_ids.name"/>
+                                        </td> -->
+                                    </tr>
+                                </t>
+                                    <tr>
+                                        <td colspan="5">
+                                            <strong>Total Appointments</strong>
+                                        </td>
+                                        <td>
+                                            <t t-esc="appoinment_count"/>
+                                        </td>
+                                    </tr>
+                            </table>
+                        </t>
+                    </div>
+                    <div class="footer" style=" width:100%; height: 20px;">
+                        <div class="text-center" style="border-top: 1px solid black;">
+                            <ul class="list-inline mb4 text-nowrap">
+                                <li t-if="company.phone" class="list-inline-item d-inline">Phone: <span class="o_force_ltr" t-field="company.phone"/></li>
+                                <li t-if="company.email" class="list-inline-item d-inline">Email: <span t-field="company.email"/></li>
+                                <li t-if="company.website" class="list-inline-item d-inline">Web: <span t-field="company.website"/></li>
+                                <li t-if="company.vat" class="list-inline-item d-inline"><t t-esc="company.country_id.vat_label or 'Tax ID'"/>: <span t-field="company.vat"/></li>
+                            </ul>
+                        </div>
+                        <div style="float: left;width: 400px;">
+                            <ul class="list-inline">
+                                <li>
+                                    Generated On:
+                                     <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M')"/>
+                                </li>
+                            </ul>
+                        </div>
+                        <div style="float: right;">
+                            <div t-if="report_type == 'pdf'" class="text-muted">
+                                Page: <li class="list-inline-item"><strong><span class="page"/> / <span class="topage"/></strong></li>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            <!-- </t> -->
+        </t>
+    </template>
+</odoo>

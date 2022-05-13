@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="assets_backend" name="systray_new_icon" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <!-- <script type="text/javascript" src="/om_hospital/static/src/js/systray_theme_menu.js"/> -->
+            <link rel="stylesheet" type="text/css" href="/om_hospital/static/src/css/nav.css"/>
+            <link rel="stylesheet" type="text/css" href="/om_hospital/static/src/css/test.css"/>
+            <link rel="stylesheet" type="text/css" href="/om_hospital/static/src/css/home.css"/>
+        </xpath>
+    </template>
+</odoo>

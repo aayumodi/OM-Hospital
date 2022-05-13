@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		<record id="hospital_patient_admission" model="ir.ui.view">
+			<field name="name">hospital.appoinment.form.extended</field>
+            <field name="model">hospital.appoinment</field>
+            <field name="arch" type="xml">
+                <form create="0">
+            		<header>
+            			<button name="action_admit" string="Admit" type="object" class="btn-primary" attrs="{'invisible': [('admission_status','!=', 'requested')]}"/>
+            			<button id="button_req_cancel"  name="%(om_admission.admission_req_cancel_action)d" string="Admission Req Cancel" class="btn-primary" type="action" attrs="{'invisible': [('admission_status','!=', 'requested')]}"/>
+            		</header>
+                	<sheet>
+                		<group>
+                			<group>
+                				<field name="patient_id"/>
+                				<field name="created_on"/>
+                				<field name="full_name"/>
+                				<field name="age"/>
+                				<field name="Gender" />
+                				<field name="mobile_number"/>
+                				<field name="appointment_date"/>
+                			</group>
+                			<group>
+                				<field name="doctor_id" string="Requested By"/>
+                				<field name="appoinment_id"/>
+                				<field name="admission_status"/>
+                				<field name="requested_time"/>
+                				<field name="admission_note"/>
+                				<field name="reason_for_cancel" attrs="{'invisible': [('reason_for_cancel','=', False)]}"/>
+                			</group>
+                		</group>
+                	</sheet>
+                </form>
+            </field>
+		</record>
+
+		<record id="hospital_patient_admission_tree" model="ir.ui.view">
+	        <field name="name">hospital.appoinment.tree</field>
+	        <field name="model">hospital.appoinment</field>
+	        <field name="arch" type="xml">
+	            <tree sample="1" multi_edit="1" create="0">
+	                <field name="patient_id"/>
+	                <field name="full_name"/>
+	                <field name="age"/>
+	                <field name="requested_time"/>
+	                <field name="doctor_id" string="Requested By"/>
+	                <field name="admission_status"/>
+	            </tree>
+	        </field>
+	    </record>
+
+		<record id="admission_req_actions" model="ir.actions.act_window">
+            <field name="name">Admission Request</field>
+            <field name="res_model">hospital.appoinment</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('admission_status', '=', 'requested')]</field>
+            <field name="view_ids"
+				eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('hospital_patient_admission_tree')}),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('hospital_patient_admission')})]" />
+        </record>
+
+        <record id="admission_cancel_actions" model="ir.actions.act_window">
+            <field name="name">Admission Request</field>
+            <field name="res_model">hospital.appoinment</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('admission_status', '=', 'cancelled')]</field>
+            <field name="view_ids"
+				eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('hospital_patient_admission_tree')}),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('hospital_patient_admission')})]" />
+        </record>
+
+
+	</data>
+</odoo>

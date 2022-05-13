@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template xml:space="preserve">
+    <!-- <t t-extend="UserMenu.Actions" t-name="testmlmlm">
+        <t t-jquery=".dropdown-divider" t-operation="before">
+             <img class="rounded-circle oe_topbar_avatar" t-att-src="'/web/static/src/img/user_menu_avatar.png'" alt="User"/>
+        </t>
+    </t>
+
+    <t t-extend="UserMenu.Actions">
+        <t t-jquery=".dropdown-divider" t-operation="after">
+            <a role="menuitem" href="#" data-menu="shortcuts" class="dropdown-item d-none d-md-inline-block">short</a>
+            <img class="rounded-circle oe_topbar_avatar" t-att-src="'/web/static/src/img/user_menu_avatar.png'" alt="User"/>
+        </t>
+    </t> -->
+</template>

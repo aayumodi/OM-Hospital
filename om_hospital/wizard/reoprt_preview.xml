@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+	<data>
+		<record id="hospital_report_preview_form" model="ir.ui.view">
+			<field name="name">hospital.reoprt.preview</field>
+			<field name="model">hospital.report.preview</field>
+			<field name="arch" type="xml">
+				<form>
+					<style>
+                        .close,.o_debug_manager {display: none;}
+                       .page{
+                        background-color : aliceblue;   
+                        }
+                    </style>
+					<sheet>
+						<group>
+							<field name="report_preview" readonly="1" nolabel="1"/>
+						</group>
+					</sheet>
+					<footer>
+						<button name="page_reload" type="object" string="Close"/>
+					</footer>
+				</form>
+			</field>
+		</record>
+
+
+		<record id="action_report_preview" model="ir.actions.act_window">
+        	    <field name="name">Report Preview</field>
+                <field name="res_model">hospital.report.preview</field>
+                <field name="view_mode">form</field>
+                <field name="target">new</field>
+      </record>
+
+      <report 
+	      	id="report_appointment_preview"
+	      	string = "Report Preview"
+	      	model ="hospital.appoinment"
+	      	report_type ="qweb-pdf"
+	      	name ="om_hospital.report_preview_appointment"
+	      	file = "om_hospital.report_preview_appointment"
+	      	menu = "False"
+      	/>
+
+	</data>
+</odoo>

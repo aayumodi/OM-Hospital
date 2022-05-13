@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+	<data>
+		<record id="Patient_admission_req" model="ir.ui.view">
+			<field name="name">Patient Admission Request</field>
+			<field name="model">admission.request.wizard</field>
+			<field name="arch" type="xml">
+				<form>
+					<sheet>
+						<group>
+							<field name="patient_id"/>
+							<field name="name"/>
+							<field name="admission_reason" required="1"/>
+						</group>
+					</sheet>
+					<footer>
+						<button name="btn_request" string="Request" type="object" class="btn-primary"/>
+						<button name="cancel" string="Cancel" special="cancel"/>
+					</footer>
+				</form>
+			</field>
+		</record>
+
+		<record id="patient_admission_req_action" model="ir.actions.act_window">
+            <field name="name">Patient Admission Request</field>
+            <field name="res_model">admission.request.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <record id="action_patient_admssion_req" model="ir.actions.server">
+            <field name="name">Patient Admission Request</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="model_hospital_appoinment"/>
+            <field name="binding_model_id" ref="model_hospital_appoinment"/>
+            <field name="state">code</field>
+            <field name="binding_view_types">form</field>
+            <field name="code">
+                if record:
+                    action_values = env.ref('om_hospital.patient_admission_req_action').sudo().read()[0]
+                    action_values.update({'context': env.context})
+                    action = action_values
+            </field>
+        </record>
+	</data>
+</odoo>

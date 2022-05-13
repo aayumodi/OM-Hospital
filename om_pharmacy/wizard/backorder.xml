@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		<record id="pharmacy_back_order_view" model="ir.ui.view">
+			<field name="name">Pharmacy Back Order</field>
+			<field name="model">pharmacy.back.order</field>
+			<field name="arch" type="xml">
+				<form>
+					<sheet>
+						<div class="oe_title">
+							<span>You have not assigned enough quantity to the below lines, do you want to create backorder for them?</span>
+						</div>
+					</sheet>
+					<footer>
+						<button name="create_back_order" string="Create BackOrder" type="object" class="btn-primary"/>
+						<button name="cancel" string="Cancel" type="object" special="cancel"/>
+					</footer>
+				</form>
+			</field>
+		</record>
+	</data>
+</odoo>
