@@ -39,11 +39,9 @@ class Employee(models.Model):
             [('report_name', '=', report_name),
              ('report_type', '=', report_type)], limit=1)
         return report.report_action(self, config=False)
-        # pass
 
     @api.model
     def get_user_employee_details(self):
-        # import pdb; pdb.set_trace()
         uid = request.session.uid
         today_date = date.today()
         employee = self.env['res.users'].sudo().search_read([('id', '=', uid)], limit=1)
@@ -120,42 +118,42 @@ class Employee(models.Model):
         and e.date_end <= now() + interval '15 day')
         order by e.date_begin """)
         event = cr.fetchall()
-        announcement = []
-        if employee:
-            department = employee.department_id
-            job_id = employee.job_id
-            sql = """select ha.name, ha.announcement_reason
-            from hr_announcement ha
-            left join hr_employee_announcements hea
-            on hea.announcement = ha.id
-            left join hr_department_announcements hda
-            on hda.announcement = ha.id
-            left join hr_job_position_announcements hpa
-            on hpa.announcement = ha.id
-            where ha.state = 'approved' and
-            ha.date_start <= now()::date and
-            ha.date_end >= now()::date and
-            (ha.is_announcement = True or
-            (ha.is_announcement = False
-            and ha.announcement_type = 'employee'
-            and hea.employee = %s)""" % employee.id
-            if department:
-                sql += """ or
-                (ha.is_announcement = False and
-                ha.announcement_type = 'department'
-                and hda.department = %s)""" % department.id
-            if job_id:
-                sql += """ or
-                (ha.is_announcement = False and
-                ha.announcement_type = 'job_position'
-                and hpa.job_position = %s)""" % job_id.id
-            sql += ')'
-            cr.execute(sql)
-            announcement = cr.fetchall()
+        # announcement = []
+        # if employee:
+        #     department = employee.department_id
+        #     job_id = employee.job_id
+        #     sql = """select ha.name, ha.announcement_reason
+        #     from hr_announcement ha
+        #     left join hr_employee_announcements hea
+        #     on hea.announcement = ha.id
+        #     left join hr_department_announcements hda
+        #     on hda.announcement = ha.id
+        #     left join hr_job_position_announcements hpa
+        #     on hpa.announcement = ha.id
+        #     where ha.state = 'approved' and
+        #     ha.date_start <= now()::date and
+        #     ha.date_end >= now()::date and
+        #     (ha.is_announcement = True or
+        #     (ha.is_announcement = False
+        #     and ha.announcement_type = 'employee'
+        #     and hea.employee = %s)""" % employee.id
+        #     if department:
+        #         sql += """ or
+        #         (ha.is_announcement = False and
+        #         ha.announcement_type = 'department'
+        #         and hda.department = %s)""" % department.id
+        #     if job_id:
+        #         sql += """ or
+        #         (ha.is_announcement = False and
+        #         ha.announcement_type = 'job_position'
+        #         and hpa.job_position = %s)""" % job_id.id
+        #     sql += ')'
+        #     cr.execute(sql)
+        #     announcement = cr.fetchall()
         return {
             'birthday': birthday,
             'event': event,
-            'announcement': announcement
+            # 'announcement': announcement
         }
 
     @api.model
@@ -170,71 +168,71 @@ group by hr_employee.department_id,hr_department.name""")
             data.append({'label': dat[i][1], 'value': dat[i][2]})
         return data
 
-    # @api.model
-    # def get_department_leave(self):
-    #     month_list = []
-    #     graph_result = []
-    #     for i in range(5, -1, -1):
-    #         last_month = datetime.now() - relativedelta(months=i)
-    #         text = format(last_month, '%B %Y')
-    #         month_list.append(text)
-    #     self.env.cr.execute("""select id, name from hr_department where active=True """)
-    #     departments = self.env.cr.dictfetchall()
-    #     department_list = [x['name'] for x in departments]
-    #     for month in month_list:
-    #         leave = {}
-    #         for dept in departments:
-    #             leave[dept['name']] = 0
-    #         vals = {
-    #             'l_month': month,
-    #             'leave': leave
-    #         }
-    #         graph_result.append(vals)
-    #     sql = """
-    #     SELECT h.id, h.employee_id,h.department_id
-    #          , extract('month' FROM y)::int AS leave_month
-    #          , to_char(y, 'Month YYYY') as month_year
-    #          , GREATEST(y                    , h.date_from) AS date_from
-    #          , LEAST   (y + interval '1 month', h.date_to)   AS date_to
-    #     FROM  (select * from hr_leave where state = 'validate') h
-    #          , generate_series(date_trunc('month', date_from::timestamp)
-    #                          , date_trunc('month', date_to::timestamp)
-    #                          , interval '1 month') y
-    #     where date_trunc('month', GREATEST(y , h.date_from)) >= date_trunc('month', now()) - interval '6 month' and
-    #     date_trunc('month', GREATEST(y , h.date_from)) <= date_trunc('month', now())
-    #     and h.department_id is not null
-    #     """
-    #     self.env.cr.execute(sql)
-    #     results = self.env.cr.dictfetchall()
-    #     leave_lines = []
-    #     for line in results:
-    #         employee = self.browse(line['employee_id'])
-    #         from_dt = fields.Datetime.from_string(line['date_from'])
-    #         to_dt = fields.Datetime.from_string(line['date_to'])
-    #         days = employee.get_work_days_dashboard(from_dt, to_dt)
-    #         line['days'] = days
-    #         vals = {
-    #             'department': line['department_id'],
-    #             'l_month': line['month_year'],
-    #             'days': days
-    #         }
-    #         leave_lines.append(vals)
-    #     if leave_lines:
-    #         df = pd.DataFrame(leave_lines)
-    #         rf = df.groupby(['l_month', 'department']).sum()
-    #         result_lines = rf.to_dict('index')
-    #         for month in month_list:
-    #             for line in result_lines:
-    #                 if month.replace(' ', '') == line[0].replace(' ', ''):
-    #                     match = list(filter(lambda d: d['l_month'] in [month], graph_result))[0]['leave']
-    #                     dept_name = self.env['hr.department'].browse(line[1]).name
-    #                     if match:
-    #                         match[dept_name] = result_lines[line]['days']
-    #     for result in graph_result:
-    #         result['l_month'] = result['l_month'].split(' ')[:1][0].strip()[:3] + " " + \
-    #                             result['l_month'].split(' ')[1:2][0]
+    @api.model
+    def get_department_leave(self):
+        month_list = []
+        graph_result = []
+        for i in range(5, -1, -1):
+            last_month = datetime.now() - relativedelta(months=i)
+            text = format(last_month, '%B %Y')
+            month_list.append(text)
+        self.env.cr.execute("""select id, name from hr_department where active=True """)
+        departments = self.env.cr.dictfetchall()
+        department_list = [x['name'] for x in departments]
+        for month in month_list:
+            leave = {}
+            for dept in departments:
+                leave[dept['name']] = 0
+            vals = {
+                'l_month': month,
+                'leave': leave
+            }
+            graph_result.append(vals)
+        sql = """
+        SELECT h.id, h.employee_id,h.department_id
+             , extract('month' FROM y)::int AS leave_month
+             , to_char(y, 'Month YYYY') as month_year
+             , GREATEST(y                    , h.date_from) AS date_from
+             , LEAST   (y + interval '1 month', h.date_to)   AS date_to
+        FROM  (select * from hr_leave where state = 'validate') h
+             , generate_series(date_trunc('month', date_from::timestamp)
+                             , date_trunc('month', date_to::timestamp)
+                             , interval '1 month') y
+        where date_trunc('month', GREATEST(y , h.date_from)) >= date_trunc('month', now()) - interval '6 month' and
+        date_trunc('month', GREATEST(y , h.date_from)) <= date_trunc('month', now())
+        and h.department_id is not null
+        """
+        self.env.cr.execute(sql)
+        results = self.env.cr.dictfetchall()
+        leave_lines = []
+        for line in results:
+            employee = self.browse(line['employee_id'])
+            from_dt = fields.Datetime.from_string(line['date_from'])
+            to_dt = fields.Datetime.from_string(line['date_to'])
+            days = employee.get_work_days_dashboard(from_dt, to_dt)
+            line['days'] = days
+            vals = {
+                'department': line['department_id'],
+                'l_month': line['month_year'],
+                'days': days
+            }
+            leave_lines.append(vals)
+        if leave_lines:
+            df = pd.DataFrame(leave_lines)
+            rf = df.groupby(['l_month', 'department']).sum()
+            result_lines = rf.to_dict('index')
+            for month in month_list:
+                for line in result_lines:
+                    if month.replace(' ', '') == line[0].replace(' ', ''):
+                        match = list(filter(lambda d: d['l_month'] in [month], graph_result))[0]['leave']
+                        dept_name = self.env['hr.department'].browse(line[1]).name
+                        if match:
+                            match[dept_name] = result_lines[line]['days']
+        for result in graph_result:
+            result['l_month'] = result['l_month'].split(' ')[:1][0].strip()[:3] + " " + \
+                                result['l_month'].split(' ')[1:2][0]
 
-    #     return graph_result, department_list
+        return graph_result, department_list
 
     def get_work_days_dashboard(self, from_datetime, to_datetime, compute_leaves=False, calendar=None, domain=None):
         resource = self.resource_id

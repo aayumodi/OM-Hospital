@@ -54,7 +54,7 @@ var HrDashboard = AbstractAction.extend({
              'click .hospital_appointment':'hospital_appointment',
              'click .patient_admit':'patient_admit',
              'click .hospital_doctor': 'hospital_doctor',
-             // 'click .login_broad_factor': 'employee_broad_factor',
+             'click .hospital_invoices': 'hospital_invoices',
             "click .o_hr_attendance_sign_in_out_icon": function() {
             this.$('.o_hr_attendance_sign_in_out_icon').attr("disabled", "disabled");
             this.update_attendance();
@@ -75,7 +75,7 @@ var HrDashboard = AbstractAction.extend({
         this.dashboards_templates = ['LoginEmployeeDetails','ManagerDashboard', 'EmployeeDashboard'];
         this.employee_birthday = [];
         this.upcoming_events = [];
-        this.announcements = [];
+        // this.announcements = [];
         this.login_employee = [];
 
     },
@@ -109,7 +109,7 @@ var HrDashboard = AbstractAction.extend({
             .then(function (res) {
                 self.employee_birthday = res['birthday'];
                 self.upcoming_events = res['event'];
-                self.announcements = res['announcement'];
+                // self.announcements = res['announcement'];
             });
         return $.when(def0, def1, def2);
         });
@@ -147,16 +147,16 @@ var HrDashboard = AbstractAction.extend({
         }).then(function(result) {
             self.login_employee =  result[0];
         });
-        var def2 = self._rpc({
-            model: "res.users",
-            method: "get_upcoming",
-        })
-        .then(function (res) {
-            self.employee_birthday = res['birthday'];
-            self.upcoming_events = res['event'];
-            self.announcements = res['announcement'];
-        });
-        return $.when(def0, def1, def2);
+        // var def2 = self._rpc({
+        //     model: "res.users",
+        //     method: "get_upcoming",
+        // })
+        // .then(function (res) {
+        //     self.employee_birthday = res['birthday'];
+        //     self.upcoming_events = res['event'];
+        //     self.announcements = res['announcement'];
+        // });
+        return $.when(def0, def1);
     },
 
 
@@ -182,7 +182,6 @@ var HrDashboard = AbstractAction.extend({
             self.render_leave_graph();
             self.update_join_resign_trends();
             self.update_monthly_attrition();
-            // self.update_leave_trend();
         }
     },
 
@@ -202,7 +201,7 @@ var HrDashboard = AbstractAction.extend({
     },
 
     get_emp_image_url: function(employee){
-        return window.location.origin + '/web/image?model=res.users&field=image_1920&id='+employee;
+        return window.location.origin + '/web/image?model=hr.employee&field=image_1920&id='+employee;
     },
 
     update_attendance: function () {
@@ -285,75 +284,7 @@ var HrDashboard = AbstractAction.extend({
             });
         },
 
-        leaves_to_approve: function(e) {
-        console.log("leaves_to_approve")
-        var self = this;
-        e.stopPropagation();
-        e.preventDefault();
-
-        var options = {
-            on_reverse_breadcrumb: this.on_reverse_breadcrumb,
-        };
-        this.do_action({
-            name: _t("Admission Request"),
-            type: 'ir.actions.act_window',
-            res_model: 'hospital.appoinment',
-            view_mode: 'tree,form,calendar',
-            views: [[false, 'list'],[false, 'form']],
-            domain: [['admission_status','=','requested']],
-            target: 'current'
-        }, options)
-    },
-
-    //employee broad factor
-
-    //  employee_broad_factor: function(e) {
-
-    //     var self = this;
-    //     e.stopPropagation();
-    //     e.preventDefault();
-    //     var options = {
-    //         on_reverse_breadcrumb: this.on_reverse_breadcrumb,
-    //     };
-    //     var today = new Date();
-
-    //     var dd = String(today.getDate()).padStart(2, '0');
-    //     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-    //     var yyyy = today.getFullYear();
-
-    //    today = mm + '/' + dd + '/' + yyyy;
-
-    //     this.do_action({
-    //         name: _t("Leave Request"),
-    //         type: 'ir.actions.act_window',
-    //         res_model: 'hr.leave',
-    //         view_mode: 'tree,form,calendar',
-    //         views: [[false, 'list'],[false, 'form']],
-    //         domain: [['state','in',['validate']],['employee_id','=', this.login_employee.id],['date_to','<=',today]],
-    //         target: 'current',
-    //         context:{'order':'duration_display'}
-    //     }, options)
-
-    // },
-
-    generate_broad_factor_report: function(e) {
-        var self = this;
-        e.stopPropagation();
-        e.preventDefault();
-        this._rpc({
-                model: 'res.users',
-                method: 'print_report',
-                args: [[self.login_employee.id], 'qweb-pdf'],
-                // args: [this.given_context.active_id, 'qweb-pdf'],
-                // context: self.odoo_context,
-            }).then(function (result) {
-                self.do_action(result);
-            });
-    },
-
-    //hr timesheets
-
-    hospital_doctor: function(e) {
+        hospital_doctor: function(e) {
          var self = this;
         e.stopPropagation();
         e.preventDefault();
@@ -374,9 +305,7 @@ var HrDashboard = AbstractAction.extend({
         }, options)
     },
 
-    //Contracts
-
-    patient_admit: function(e){
+        patient_admit: function(e){
             var self = this;
             e.stopPropagation();
             e.preventDefault();
@@ -401,18 +330,133 @@ var HrDashboard = AbstractAction.extend({
 
         },
 
-    //leave request today
-    leaves_request_today: function(e) {
+        leaves_to_approve: function(e) {
+        console.log("leaves_to_approve")
         var self = this;
-        var date = new Date();
-        // debugger;
+        e.stopPropagation();
+        e.preventDefault();
+
+        var options = {
+            on_reverse_breadcrumb: this.on_reverse_breadcrumb,
+        };
+        this.do_action({
+            name: _t("Leave Request"),
+            type: 'ir.actions.act_window',
+            res_model: 'hospital.appoinment',
+            view_mode: 'tree,form,calendar',
+            views: [[false, 'list'],[false, 'form']],
+            domain: [['admission_status','=','requested']],
+            target: 'current'
+        }, options)
+    },
+
+    //employee broad factor
+
+     hospital_invoices: function(e) {
+
+        var self = this;
+        e.stopPropagation();
+        e.preventDefault();
+        var options = {
+            on_reverse_breadcrumb: this.on_reverse_breadcrumb,
+        };
+        var today = new Date();
+
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = today.getFullYear();
+
+//        today = mm + '/' + dd + '/' + yyyy;
+
+        this.do_action({
+            name: _t("Leave Request"),
+            type: 'ir.actions.act_window',
+            res_model: 'account.move',
+            view_mode: 'tree,form,calendar',
+            views: [[false, 'list'],[false, 'form']],
+            domain: [],
+            target: 'current',
+            context:{}
+        }, options)
+
+    },
+
+    //hr timesheets
+
+    hr_timesheets: function(e) {
+         var self = this;
         e.stopPropagation();
         e.preventDefault();
         var options = {
             on_reverse_breadcrumb: this.on_reverse_breadcrumb,
         };
         this.do_action({
-            name: _t("Today"),
+            name: _t("Timesheets"),
+            type: 'ir.actions.act_window',
+            res_model: 'account.analytic.line',
+            view_mode: 'tree,form',
+            views: [[false, 'list'], [false, 'form']],
+            context: {
+                'search_default_month': true,
+            },
+            domain: [['employee_id','=', this.login_employee.id]],
+            target: 'current'
+        }, options)
+    },
+
+    //Contracts
+
+    hr_contract: function(e){
+            var self = this;
+            e.stopPropagation();
+            e.preventDefault();
+            session.user_has_group('hr.group_hr_manager').then(function(has_group){
+                if(has_group){
+                    var options = {
+                        on_reverse_breadcrumb: self.on_reverse_breadcrumb,
+                    };
+                    self.do_action({
+                        name: _t("Contracts"),
+                        type: 'ir.actions.act_window',
+                        res_model: 'hospital.patient',
+                        view_mode: 'tree,form,calendar',
+                        views: [[false, 'list'],[false, 'form']],
+                        context: {
+                            'search_default_employee_id': self.login_employee.id,
+                        },
+                        target: 'current'
+                    })
+                }
+            });
+
+        },
+
+    generate_broad_factor_report: function(e) {
+        var self = this;
+        e.stopPropagation();
+        e.preventDefault();
+        this._rpc({
+                model: 'res.users',
+                method: 'print_report',
+                args: [[self.login_employee.id], 'qweb-pdf'],
+                // args: [this.given_context.active_id, 'qweb-pdf'],
+                // context: self.odoo_context,
+            }).then(function (result) {
+                self.do_action(result);
+            });
+    },
+
+    //leave request today
+    leaves_request_today: function(e) {
+        var self = this;
+        var date = new Date();
+        e.stopPropagation();
+        e.preventDefault();
+        var options = {
+            on_reverse_breadcrumb: this.on_reverse_breadcrumb,
+        };
+        this.do_action({
+            name: _t("Leaves Today"),
             type: 'ir.actions.act_window',
             res_model: 'hospital.appoinment',
             view_mode: 'tree,form,calendar',
@@ -437,7 +481,7 @@ var HrDashboard = AbstractAction.extend({
         var fday = firstDay.toJSON().slice(0,10).replace(/-/g,'-');
         var lday = lastDay.toJSON().slice(0,10).replace(/-/g,'-');
         this.do_action({
-            name: _t("This Month Admission Request"),
+            name: _t("This Month Leaves"),
             type: 'ir.actions.act_window',
             res_model: 'hospital.appoinment',
             view_mode: 'tree,form,calendar',
@@ -447,23 +491,23 @@ var HrDashboard = AbstractAction.extend({
         }, options)
     },
 
-    // leave_allocations_to_approve: function(e) {
-    //     var self = this;
-    //     e.stopPropagation();
-    //     e.preventDefault();
-    //     var options = {
-    //         on_reverse_breadcrumb: this.on_reverse_breadcrumb,
-    //     };
-    //     this.do_action({
-    //         name: _t("Leave Allocation Request"),
-    //         type: 'ir.actions.act_window',
-    //         res_model: 'hr.leave.allocation',
-    //         view_mode: 'tree,form,calendar',
-    //         views: [[false, 'list'],[false, 'form']],
-    //         domain: [['state','in',['confirm', 'validate1']]],
-    //         target: 'current'
-    //     }, options)
-    // },
+    leave_allocations_to_approve: function(e) {
+        var self = this;
+        e.stopPropagation();
+        e.preventDefault();
+        var options = {
+            on_reverse_breadcrumb: this.on_reverse_breadcrumb,
+        };
+        this.do_action({
+            name: _t("Leave Allocation Request"),
+            type: 'ir.actions.act_window',
+            res_model: 'hr.leave.allocation',
+            view_mode: 'tree,form,calendar',
+            views: [[false, 'list'],[false, 'form']],
+            domain: [['state','in',['confirm', 'validate1']]],
+            target: 'current'
+        }, options)
+    },
 
     job_applications_to_approve: function(event){
         var self = this;
@@ -514,22 +558,22 @@ var HrDashboard = AbstractAction.extend({
                     return arc(d);
                 });
 
-            // var legend = d3.select(elem[0]).append("table").attr('class','legend');
+            var legend = d3.select(elem[0]).append("table").attr('class','legend');
 
-            // // create one row per segment.
-            // var tr = legend.append("tbody").selectAll("tr").data(data).enter().append("tr");
+            // create one row per segment.
+            var tr = legend.append("tbody").selectAll("tr").data(data).enter().append("tr");
 
-            // // create the first column for each segment.
-            // tr.append("td").append("svg").attr("width", '16').attr("height", '16').append("rect")
-            //     .attr("width", '16').attr("height", '16')
-            //     .attr("fill",function(d, i){ return color(i) });
+            // create the first column for each segment.
+            tr.append("td").append("svg").attr("width", '16').attr("height", '16').append("rect")
+                .attr("width", '16').attr("height", '16')
+                .attr("fill",function(d, i){ return color(i) });
 
-            // // create the second column for each segment.
-            // tr.append("td").text(function(d){ return d.label;});
+            // create the second column for each segment.
+            tr.append("td").text(function(d){ return d.label;});
 
-            // // create the third column for each segment.
-            // tr.append("td").attr("class",'legendFreq')
-            //     .text(function(d){ return d.value;});
+            // create the third column for each segment.
+            tr.append("td").attr("class",'legendFreq')
+                .text(function(d){ return d.value;});
 
 
 
@@ -727,101 +771,101 @@ var HrDashboard = AbstractAction.extend({
         });
     },
 
-    update_leave_trend: function(){
-        var self = this;
-        rpc.query({
-            model: "res.users",
-            // method: "employee_leave_trend",
-        }).then(function (data) {
-            var elem = self.$('.leave_trend');
-            var margin = {top: 30, right: 20, bottom: 30, left: 80},
-                width = 500 - margin.left - margin.right,
-                height = 250 - margin.top - margin.bottom;
+//     update_leave_trend: function(){
+//         var self = this;
+//         rpc.query({
+//             model: "res.users",
+//             method: "employee_leave_trend",
+//         }).then(function (data) {
+//             var elem = self.$('.leave_trend');
+//             var margin = {top: 30, right: 20, bottom: 30, left: 80},
+//                 width = 500 - margin.left - margin.right,
+//                 height = 250 - margin.top - margin.bottom;
 
-            // Set the ranges
-            var x = d3.scale.ordinal()
-                .rangeRoundBands([0, width], 1);
+//             // Set the ranges
+//             var x = d3.scale.ordinal()
+//                 .rangeRoundBands([0, width], 1);
 
-            var y = d3.scale.linear()
-                .range([height, 0]);
+//             var y = d3.scale.linear()
+//                 .range([height, 0]);
 
-            // Define the axes
-            var xAxis = d3.svg.axis().scale(x)
-                .orient("bottom");
+//             // Define the axes
+//             var xAxis = d3.svg.axis().scale(x)
+//                 .orient("bottom");
 
-            var yAxis = d3.svg.axis().scale(y)
-                .orient("left").ticks(5);
+//             var yAxis = d3.svg.axis().scale(y)
+//                 .orient("left").ticks(5);
 
-            var valueline = d3.svg.line()
-                .x(function(d) { return x(d.l_month); })
-                .y(function(d) { return y(d.leave); });
+//             var valueline = d3.svg.line()
+//                 .x(function(d) { return x(d.l_month); })
+//                 .y(function(d) { return y(d.leave); });
 
 
-            var svg = d3.select(elem[0]).append("svg")
-                .attr("width", width + margin.left + margin.right)
-                .attr("height", height + margin.top + margin.bottom)
-                .append("g")
-                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+//             var svg = d3.select(elem[0]).append("svg")
+//                 .attr("width", width + margin.left + margin.right)
+//                 .attr("height", height + margin.top + margin.bottom)
+//                 .append("g")
+//                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-            x.domain(data.map(function(d) { return d.l_month; }));
-            y.domain([0, d3.max(data, function(d) { return d.leave; })]);
+//             x.domain(data.map(function(d) { return d.l_month; }));
+//             y.domain([0, d3.max(data, function(d) { return d.leave; })]);
 
-            // Add the X Axis
-            svg.append("g")
-                .attr("class", "x axis")
-                .attr("transform", "translate(0," + height + ")")
-                .call(xAxis);
+//             // Add the X Axis
+//             svg.append("g")
+//                 .attr("class", "x axis")
+//                 .attr("transform", "translate(0," + height + ")")
+//                 .call(xAxis);
 
-            // Add the Y Axis
-            svg.append("g")
-                .attr("class", "y axis")
-                .call(yAxis);
+//             // Add the Y Axis
+//             svg.append("g")
+//                 .attr("class", "y axis")
+//                 .call(yAxis);
 
-            svg.append("path")
-                .attr("class", "line")
-                .attr("d", valueline(data));
+//             svg.append("path")
+//                 .attr("class", "line")
+//                 .attr("d", valueline(data));
 
-            // Add the scatterplot
-            svg.selectAll("dot")
-                .data(data)
-                .enter().append("circle")
-                .attr("r", 3)
-                .attr("cx", function(d) { return x(d.l_month); })
-                .attr("cy", function(d) { return y(d.leave); })
-//                .on('mouseover', function() { d3.select(this).transition().duration(500).ease("elastic").attr('r', 3 * 2) })
-//                .on('mouseout', function() { d3.select(this).transition().duration(500).ease("in-out").attr('r', 3) });
-                .on("mouseover", function() { tooltip.style("display", null);
-                    d3.select(this).transition().duration(500).ease("elastic").attr('r', 3 * 2)
-                 })
-                .on("mouseout", function() { tooltip.style("display", "none");
-                    d3.select(this).transition().duration(500).ease("in-out").attr('r', 3)
-                })
-                .on("mousemove", function(d) {
-                    var xPosition = d3.mouse(this)[0] - 15;
-                    var yPosition = d3.mouse(this)[1] - 25;
-                    tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
-                    tooltip.select("text").text(d.leave);
-                });
+//             // Add the scatterplot
+//             svg.selectAll("dot")
+//                 .data(data)
+//                 .enter().append("circle")
+//                 .attr("r", 3)
+//                 .attr("cx", function(d) { return x(d.l_month); })
+//                 .attr("cy", function(d) { return y(d.leave); })
+// //                .on('mouseover', function() { d3.select(this).transition().duration(500).ease("elastic").attr('r', 3 * 2) })
+// //                .on('mouseout', function() { d3.select(this).transition().duration(500).ease("in-out").attr('r', 3) });
+//                 .on("mouseover", function() { tooltip.style("display", null);
+//                     d3.select(this).transition().duration(500).ease("elastic").attr('r', 3 * 2)
+//                  })
+//                 .on("mouseout", function() { tooltip.style("display", "none");
+//                     d3.select(this).transition().duration(500).ease("in-out").attr('r', 3)
+//                 })
+//                 .on("mousemove", function(d) {
+//                     var xPosition = d3.mouse(this)[0] - 15;
+//                     var yPosition = d3.mouse(this)[1] - 25;
+//                     tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
+//                     tooltip.select("text").text(d.leave);
+//                 });
 
-            var tooltip = svg.append("g")
-                  .attr("class", "tooltip")
-                  .style("display", "none");
+//             var tooltip = svg.append("g")
+//                   .attr("class", "tooltip")
+//                   .style("display", "none");
 
-                tooltip.append("rect")
-                  .attr("width", 30)
-                  .attr("height", 20)
-                  .attr("fill", "black")
-                  .style("opacity", 0.5);
+//                 tooltip.append("rect")
+//                   .attr("width", 30)
+//                   .attr("height", 20)
+//                   .attr("fill", "black")
+//                   .style("opacity", 0.5);
 
-                tooltip.append("text")
-                  .attr("x", 15)
-                  .attr("dy", "1.2em")
-                  .style("text-anchor", "middle")
-                  .attr("font-size", "12px")
-                  .attr("font-weight", "bold");
+//                 tooltip.append("text")
+//                   .attr("x", 15)
+//                   .attr("dy", "1.2em")
+//                   .style("text-anchor", "middle")
+//                   .attr("font-size", "12px")
+//                   .attr("font-weight", "bold");
 
-        });
-    },
+//         });
+//     },
 
     render_leave_graph:function(){
         var self = this;
@@ -831,7 +875,7 @@ var HrDashboard = AbstractAction.extend({
         var color = d3.scale.ordinal().range(colors);
         rpc.query({
                 model: "res.users",
-                // method: "get_department_leave",
+                method: "get_department_leave",
             }).then(function (data) {
                 var fData = data[0];
                 var dept = data[1];

@@ -25,7 +25,7 @@
 
     <template id="assets_backend_dashboard" name="Hr Dashboard assets inherit" inherit_id="web.assets_backend">
         <xpath expr="." position="inside">
-            <link rel="stylesheet" href="/hrms_dashboard/static/src/css/hrms_dash.css"/>
+            <link rel="stylesheet" href="/hrms_dashboard/static/src/css/hrms_dashbo.css"/>
             <script type="text/javascript" src="/hrms_dashboard/static/src/js/hrms_dashboard.js"/>
 
             <link rel="stylesheet" href="/hrms_dashboard/static/src/css/lib/nv.d3.css"/>

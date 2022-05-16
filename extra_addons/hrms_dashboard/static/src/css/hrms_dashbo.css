@@ -54,7 +54,7 @@ overflow: auto !important;
     letter-spacing: .5px;
     color: #003e85;
     box-shadow: 0 6px 7px #6986b1e0;
-    margin-top: 200px;
+    margin-top: 45px;
 }
 .stat-widget-one .stat-icon {
     vertical-align: top;
@@ -378,8 +378,8 @@ rect:hover {  fill:#934da5; }
 
     font-size: 14px;
     color: #6986b1e0;
-    margin-top: -2.7rem;
-    margin-left: 4rem;
+    margin-top: 3.2rem;
+    margin-left: 0rem;
 
 }
 .stat-widget-one .stat-digit {

@@ -7,7 +7,7 @@
         </div>
     </t>
     <t t-name="LoginEmployeeDetails">
-        <link rel="stylesheet" href="/hrms_dashboard/static/src/css/hrms_dash.css"/>
+        <link rel="stylesheet" href="/hrms_dashboard/static/src/css/hrms_dashbo.css"/>
         <div class="row main-section">
             <div class="col-md-2 col-sm-2 dummy"></div>
             <div class="col-md-2 col-sm-2 employee-prof">
@@ -111,8 +111,8 @@
                                 <i class="fa fa-wheelchair" aria-label="Info" title="Info"></i>
                             </div>
                             <div class="text-center">
-                                <div class="stat-text">Patients</div>
-                                <div class="stat-digit"><t t-esc="widget.login_employee['patient_count']"/></div>
+                                <div class="stat-text"><t t-esc="widget.login_employee['patient_count']"/> Patients</div>
+                                <!-- <div class="stat-digit"><t t-esc="widget.login_employee['patient_count']"/></div> -->
                             </div>
                             <div class="dash-box-action leaves_to_approve">
                                 <button>More Info</button>
@@ -129,8 +129,8 @@
                                 <i class="fa fa-stethoscope" aria-label="Info" title="Info"></i>
                             </div>
                             <div class="text-center">
-                                <div class="stat-text">Doctors</div>
-                                <div class="stat-digit"><t t-esc="widget.login_employee['doctor_count']"/></div>
+                                <div class="stat-text"><t t-esc="widget.login_employee['doctor_count']"/> Doctors</div>
+                                <!-- <div class="stat-digit"><t t-esc="widget.login_employee['doctor_count']"/></div> -->
                             </div>
                             <div class="dash-box-action leaves_to_approve">
                                 <button>More Info</button>
@@ -147,8 +147,8 @@
                                 <i class="fa fa-medkit" aria-label="Info" title="Info"></i>
                             </div>
                             <div class="text-center">
-                                <div class="stat-text">Appointments</div>
-                                <div class="stat-digit"><t t-esc="widget.login_employee['appoinment_count']"/></div>
+                                <div class="stat-text"><t t-esc="widget.login_employee['appoinment_count']"/> Appointments</div>
+                                <!-- <div class="stat-digit"><t t-esc="widget.login_employee['appoinment_count']"/></div> -->
                             </div>
                             <div class="dash-box-action leaves_to_approve">
                                 <button>More Info</button>
@@ -165,8 +165,8 @@
                                 <i class="fa fa-medkit" aria-label="Info" title="Info"></i>
                             </div>
                             <div class="text-center">
-                                <div class="stat-text">Admission</div>
-                                <div class="stat-digit"><t t-esc="widget.login_employee['admission_count']"/></div>
+                                <div class="stat-text"><t t-esc="widget.login_employee['admission_count']"/> Admission</div>
+                                <!-- <div class="stat-digit"><t t-esc="widget.login_employee['admission_count']"/></div> -->
                             </div>
                             <div class="dash-box-action patient_admit">
                                 <button>More Info</button>
@@ -175,7 +175,7 @@
                     </div>
                 </div>
             </div>
-            <!-- <div class="col-md-2 col-sm-6 login_broad_factor oh-payslip oh-broad-factor">
+            <div class="col-md-2 col-sm-6 hospital_invoices oh-payslip oh-broad-factor">
                 <div class="oh-card">
                     <div class="oh-card-body">
                         <div class="stat-widget-one">
@@ -183,8 +183,8 @@
                                 <i class="fa fa-file-text" aria-label="Info" title="Info"></i>
                             </div>
                             <div class="text-center">
-                                <div class="stat-text">Invoices</div>
-                                <div class="stat-digit"><t t-esc="widget.login_employee['invoice_count']"/></div>
+                                <div class="stat-text"><t t-esc="widget.login_employee['invoice_count']"/> Invoices</div>
+                                <!-- <div class="stat-digit"><t t-esc="widget.login_employee['invoice_count']"/></div> -->
                             </div>
                             <div class="dash-box-action leaves_to_approve">
                                 <button>More Info</button>
@@ -192,7 +192,7 @@
                         </div>
                     </div>
                 </div>
-            </div> -->
+            </div>
             <!-- <div class="col-md-2 col-sm-2 hr_attendance_login">
                 <div class="oh-card">
                     <div class="oh-card-body">
@@ -423,7 +423,7 @@
                     </div>
                  </div>
             </div>
-            <div class="col-md-4 col-lg-4">
+           <!--  <div class="col-md-4 col-lg-4">
                 <div class="col-xs-12  hr_notification" style="padding: 0;">
                     <div class="col-xs-12" style="padding:0;">
                         <div class="hr_notification_head">
@@ -444,7 +444,7 @@
                         </t>
                     </div>
                  </div>
-            </div>
+            </div> -->
         </div>
        <!--  <div class="row main-section">
              <div class="col-md-2 col-sm-2 dummy"></div>
