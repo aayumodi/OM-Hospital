@@ -55,6 +55,9 @@ var HrDashboard = AbstractAction.extend({
              'click .patient_admit':'patient_admit',
              'click .hospital_doctor': 'hospital_doctor',
              'click .hospital_invoices': 'hospital_invoices',
+             'click .hospital_department': 'hospital_department',
+             'click .hospital_pharmacy': 'hospital_pharmacy',
+             'click .hospital_drug': 'hospital_drug',
             "click .o_hr_attendance_sign_in_out_icon": function() {
             this.$('.o_hr_attendance_sign_in_out_icon').attr("disabled", "disabled");
             this.update_attendance();
@@ -180,8 +183,9 @@ var HrDashboard = AbstractAction.extend({
         if (this.login_employee){
             self.render_department_employee();
             self.render_leave_graph();
-            self.update_join_resign_trends();
-            self.update_monthly_attrition();
+            // self.update_join_resign_trends();
+            // self.update_monthly_attrition();
+            // self.update_leave_trend();
         }
     },
 
@@ -292,7 +296,7 @@ var HrDashboard = AbstractAction.extend({
             on_reverse_breadcrumb: this.on_reverse_breadcrumb,
         };
         this.do_action({
-            name: _t("Timesheets"),
+            name: _t("Doctors"),
             type: 'ir.actions.act_window',
             res_model: 'hospital.doctor',
             view_mode: 'tree,form',
@@ -350,6 +354,66 @@ var HrDashboard = AbstractAction.extend({
         }, options)
     },
 
+    hospital_department: function(e) {
+        console.log("hospital_department")
+        var self = this;
+        e.stopPropagation();
+        e.preventDefault();
+
+        var options = {
+            on_reverse_breadcrumb: this.on_reverse_breadcrumb,
+        };
+        this.do_action({
+            name: _t("Departments"),
+            type: 'ir.actions.act_window',
+            res_model: 'hr.department',
+            view_mode: 'tree,form,calendar',
+            views: [[false, 'list'],[false, 'form']],
+            // domain: [['admission_status','=','requested']],
+            target: 'current'
+        }, options)
+    },
+
+    hospital_pharmacy: function(e) {
+        console.log("hospital_pharmacy")
+        var self = this;
+        e.stopPropagation();
+        e.preventDefault();
+
+        var options = {
+            on_reverse_breadcrumb: this.on_reverse_breadcrumb,
+        };
+        this.do_action({
+            name: _t("Pharmacy Orders"),
+            type: 'ir.actions.act_window',
+            res_model: 'hospital.pharmacy',
+            view_mode: 'tree,form,calendar',
+            views: [[false, 'list'],[false, 'form']],
+            // domain: [['admission_status','=','requested']],
+            target: 'current'
+        }, options)
+    },
+
+    hospital_drug: function(e) {
+        console.log("hospital_pharmacy")
+        var self = this;
+        e.stopPropagation();
+        e.preventDefault();
+
+        var options = {
+            on_reverse_breadcrumb: this.on_reverse_breadcrumb,
+        };
+        this.do_action({
+            name: _t("Drugs"),
+            type: 'ir.actions.act_window',
+            res_model: 'product.template',
+            view_mode: 'tree,form,calendar',
+            views: [[false, 'list'],[false, 'form']],
+            domain: [['categ_id.name','=','Drug']],
+            target: 'current'
+        }, options)
+    },
+
     //employee broad factor
 
      hospital_invoices: function(e) {
@@ -383,26 +447,26 @@ var HrDashboard = AbstractAction.extend({
 
     //hr timesheets
 
-    hr_timesheets: function(e) {
-         var self = this;
-        e.stopPropagation();
-        e.preventDefault();
-        var options = {
-            on_reverse_breadcrumb: this.on_reverse_breadcrumb,
-        };
-        this.do_action({
-            name: _t("Timesheets"),
-            type: 'ir.actions.act_window',
-            res_model: 'account.analytic.line',
-            view_mode: 'tree,form',
-            views: [[false, 'list'], [false, 'form']],
-            context: {
-                'search_default_month': true,
-            },
-            domain: [['employee_id','=', this.login_employee.id]],
-            target: 'current'
-        }, options)
-    },
+    // hr_timesheets: function(e) {
+    //      var self = this;
+    //     e.stopPropagation();
+    //     e.preventDefault();
+    //     var options = {
+    //         on_reverse_breadcrumb: this.on_reverse_breadcrumb,
+    //     };
+    //     this.do_action({
+    //         name: _t("Timesheets"),
+    //         type: 'ir.actions.act_window',
+    //         res_model: 'account.analytic.line',
+    //         view_mode: 'tree,form',
+    //         views: [[false, 'list'], [false, 'form']],
+    //         context: {
+    //             'search_default_month': true,
+    //         },
+    //         domain: [['employee_id','=', this.login_employee.id]],
+    //         target: 'current'
+    //     }, options)
+    // },
 
     //Contracts
 
@@ -431,15 +495,15 @@ var HrDashboard = AbstractAction.extend({
 
         },
 
-    generate_broad_factor_report: function(e) {
+        generate_broad_factor_report: function(e) {
         var self = this;
         e.stopPropagation();
         e.preventDefault();
         this._rpc({
                 model: 'res.users',
                 method: 'print_report',
-                args: [[self.login_employee.id], 'qweb-pdf'],
-                // args: [this.given_context.active_id, 'qweb-pdf'],
+                args: [[self.login_employee.id], 'qwebpdf'],
+                // args: [this.given_context.active_id, 'qwebpdf'],
                 // context: self.odoo_context,
             }).then(function (result) {
                 self.do_action(result);
@@ -491,23 +555,23 @@ var HrDashboard = AbstractAction.extend({
         }, options)
     },
 
-    leave_allocations_to_approve: function(e) {
-        var self = this;
-        e.stopPropagation();
-        e.preventDefault();
-        var options = {
-            on_reverse_breadcrumb: this.on_reverse_breadcrumb,
-        };
-        this.do_action({
-            name: _t("Leave Allocation Request"),
-            type: 'ir.actions.act_window',
-            res_model: 'hr.leave.allocation',
-            view_mode: 'tree,form,calendar',
-            views: [[false, 'list'],[false, 'form']],
-            domain: [['state','in',['confirm', 'validate1']]],
-            target: 'current'
-        }, options)
-    },
+    // leave_allocations_to_approve: function(e) {
+    //     var self = this;
+    //     e.stopPropagation();
+    //     e.preventDefault();
+    //     var options = {
+    //         on_reverse_breadcrumb: this.on_reverse_breadcrumb,
+    //     };
+    //     this.do_action({
+    //         name: _t("Leave Allocation Request"),
+    //         type: 'ir.actions.act_window',
+    //         res_model: 'hr.leave.allocation',
+    //         view_mode: 'tree,form,calendar',
+    //         views: [[false, 'list'],[false, 'form']],
+    //         domain: [['state','in',['confirm', 'validate1']]],
+    //         target: 'current'
+    //     }, options)
+    // },
 
     job_applications_to_approve: function(event){
         var self = this;
@@ -581,109 +645,203 @@ var HrDashboard = AbstractAction.extend({
 
     },
 
-    update_join_resign_trends: function(){
-        var elem = this.$('.join_resign_trend');
-        var colors = ['#70cac1', '#659d4e', '#208cc2', '#4d6cb1', '#584999', '#8e559e', '#cf3650', '#f65337', '#fe7139',
-        '#ffa433', '#ffc25b', '#f8e54b'];
-        var color = d3.scale.ordinal().range(colors);
+    // update_join_resign_trends: function(){
+    //     var elem = this.$('.join_resign_trend');
+    //     var colors = ['#70cac1', '#659d4e', '#208cc2', '#4d6cb1', '#584999', '#8e559e', '#cf3650', '#f65337', '#fe7139',
+    //     '#ffa433', '#ffc25b', '#f8e54b'];
+    //     var color = d3.scale.ordinal().range(colors);
+    //     rpc.query({
+    //         model: "res.users",
+    //         method: "join_resign_trends",
+    //     }).then(function (data) {
+    //         data.forEach(function(d) {
+    //           d.values.forEach(function(d) {
+    //             d.l_month = d.l_month;
+    //             d.count = +d.count;
+    //           });
+    //         });
+    //         var margin = {top: 30, right: 10, bottom: 30, left: 30},
+    //             width = 400 - margin.left - margin.right,
+    //             height = 250 - margin.top - margin.bottom;
+
+    //         // Set the ranges
+    //         var x = d3.scale.ordinal()
+    //             .rangeRoundBands([0, width], 1);
+
+    //         var y = d3.scale.linear()
+    //             .range([height, 0]);
+
+    //         // Define the axes
+    //         var xAxis = d3.svg.axis().scale(x)
+    //             .orient("bottom");
+
+    //         var yAxis = d3.svg.axis().scale(y)
+    //             .orient("left").ticks(5);
+
+    //         x.domain(data[0].values.map(function(d) { return d.l_month; }));
+    //         y.domain([0, d3.max(data[0].values, d => d.count)])
+
+    //         var svg = d3.select(elem[0]).append("svg")
+    //             .attr("width", width + margin.left + margin.right)
+    //             .attr("height", height + margin.top + margin.bottom)
+    //             .append("g")
+    //             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    //         // Add the X Axis
+    //         svg.append("g")
+    //             .attr("class", "x axis")
+    //             .attr("transform", "translate(0," + height + ")")
+    //             .call(xAxis);
+
+    //         // Add the Y Axis
+    //         svg.append("g")
+    //             .attr("class", "y axis")
+    //             .call(yAxis);
+
+
+    //         var line = d3.svg.line()
+    //             .x(function(d) {return x(d.l_month); })
+    //             .y(function(d) {return y(d.count); });
+
+    //         let lines = svg.append('g')
+    //           .attr('class', 'lines');
+
+    //         lines.selectAll('.line-group')
+    //             .data(data).enter()
+    //             .append('g')
+    //             .attr('class', 'line-group')
+    //             .append('path')
+    //             .attr('class', 'line')
+    //             .attr('d', function(d) { return line(d.values); })
+    //             .style('stroke', (d, i) => color(i));
+
+    //         lines.selectAll("circle-group")
+    //             .data(data).enter()
+    //             .append("g")
+    //             .selectAll("circle")
+    //             .data(function(d) { return d.values;}).enter()
+    //             .append("g")
+    //             .attr("class", "circle")
+    //             .append("circle")
+    //             .attr("cx", function(d) { return x(d.l_month)})
+    //             .attr("cy", function(d) { return y(d.count)})
+    //             .attr("r", 3);
+
+    //         var legend = d3.select(elem[0]).append("div").attr('class','legend');
+
+    //         var tr = legend.selectAll("div").data(data).enter().append("div");
+
+    //         tr.append("span").attr('class','legend_col').append("svg").attr("width", '16').attr("height", '16').append("rect")
+    //             .attr("width", '16').attr("height", '16')
+    //             .attr("fill",function(d, i){ return color(i) });
+
+    //         tr.append("span").attr('class','legend_col').text(function(d){ return d.name;});
+    //     });
+    // },
+
+    // update_monthly_attrition: function(){
+    //     var elem = this.$('.attrition_rate');
+    //     var colors = ['#70cac1', '#659d4e', '#208cc2', '#4d6cb1', '#584999', '#8e559e', '#cf3650', '#f65337', '#fe7139',
+    //     '#ffa433', '#ffc25b', '#f8e54b'];
+    //     var color = d3.scale.ordinal().range(colors);
+    //     rpc.query({
+    //         model: "res.users",
+    //         method: "get_attrition_rate",
+    //     }).then(function (data) {
+    //         var margin = {top: 30, right: 20, bottom: 30, left: 80},
+    //             width = 500 - margin.left - margin.right,
+    //             height = 250 - margin.top - margin.bottom;
+
+    //         // Set the ranges
+    //         var x = d3.scale.ordinal()
+    //             .rangeRoundBands([0, width], 1);
+
+    //         var y = d3.scale.linear()
+    //             .range([height, 0]);
+
+    //         // Define the axes
+    //         var xAxis = d3.svg.axis().scale(x)
+    //             .orient("bottom");
+
+    //         var yAxis = d3.svg.axis().scale(y)
+    //             .orient("left").ticks(5);
+
+    //         var valueline = d3.svg.line()
+    //             .x(function(d) { return x(d.month); })
+    //             .y(function(d) { return y(d.attrition_rate); });
+
+
+    //         var svg = d3.select(elem[0]).append("svg")
+    //             .attr("width", width + margin.left + margin.right)
+    //             .attr("height", height + margin.top + margin.bottom)
+    //             .append("g")
+    //             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    //         x.domain(data.map(function(d) { return d.month; }));
+    //         y.domain([0, d3.max(data, function(d) { return d.attrition_rate; })]);
+
+    //         // Add the X Axis
+    //         svg.append("g")
+    //             .attr("class", "x axis")
+    //             .attr("transform", "translate(0," + height + ")")
+    //             .call(xAxis);
+
+    //         // Add the Y Axis
+    //         svg.append("g")
+    //             .attr("class", "y axis")
+    //             .call(yAxis);
+
+    //         svg.append("path")
+    //             .attr("class", "line")
+    //             .attr("d", valueline(data));
+
+    //         // Add the scatterplot
+    //         svg.selectAll("dot")
+    //             .data(data)
+    //             .enter().append("circle")
+    //             .attr("r", 3)
+    //             .attr("cx", function(d) { return x(d.month); })
+    //             .attr("cy", function(d) { return y(d.attrition_rate); })
+    //             .on("mouseover", function() { tooltip.style("display", null);
+    //                 d3.select(this).transition().duration(500).ease("elastic").attr('r', 3 * 2)
+    //              })
+    //             .on("mouseout", function() { tooltip.style("display", "none");
+    //                 d3.select(this).transition().duration(500).ease("in-out").attr('r', 3)
+    //             })
+    //             .on("mousemove", function(d) {
+    //                 var xPosition = d3.mouse(this)[0] - 15;
+    //                 var yPosition = d3.mouse(this)[1] - 25;
+    //                 tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
+    //                 tooltip.select("text").text(d.attrition_rate);
+    //             });
+
+    //         var tooltip = svg.append("g")
+    //               .attr("class", "tooltip")
+    //               .style("display", "none");
+
+    //             tooltip.append("rect")
+    //               .attr("width", 30)
+    //               .attr("height", 20)
+    //               .attr("fill", "black")
+    //               .style("opacity", 0.5);
+
+    //             tooltip.append("text")
+    //               .attr("x", 15)
+    //               .attr("dy", "1.2em")
+    //               .style("text-anchor", "middle")
+    //               .attr("font-size", "12px")
+    //               .attr("font-weight", "bold");
+
+    //     });
+    // },
+
+    update_leave_trend: function(){
+        var self = this;
         rpc.query({
             model: "res.users",
-            method: "join_resign_trends",
+            // method: "employee_leave_trend",
         }).then(function (data) {
-            data.forEach(function(d) {
-              d.values.forEach(function(d) {
-                d.l_month = d.l_month;
-                d.count = +d.count;
-              });
-            });
-            var margin = {top: 30, right: 10, bottom: 30, left: 30},
-                width = 400 - margin.left - margin.right,
-                height = 250 - margin.top - margin.bottom;
-
-            // Set the ranges
-            var x = d3.scale.ordinal()
-                .rangeRoundBands([0, width], 1);
-
-            var y = d3.scale.linear()
-                .range([height, 0]);
-
-            // Define the axes
-            var xAxis = d3.svg.axis().scale(x)
-                .orient("bottom");
-
-            var yAxis = d3.svg.axis().scale(y)
-                .orient("left").ticks(5);
-
-            x.domain(data[0].values.map(function(d) { return d.l_month; }));
-            y.domain([0, d3.max(data[0].values, d => d.count)])
-
-            var svg = d3.select(elem[0]).append("svg")
-                .attr("width", width + margin.left + margin.right)
-                .attr("height", height + margin.top + margin.bottom)
-                .append("g")
-                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-            // Add the X Axis
-            svg.append("g")
-                .attr("class", "x axis")
-                .attr("transform", "translate(0," + height + ")")
-                .call(xAxis);
-
-            // Add the Y Axis
-            svg.append("g")
-                .attr("class", "y axis")
-                .call(yAxis);
-
-
-            var line = d3.svg.line()
-                .x(function(d) {return x(d.l_month); })
-                .y(function(d) {return y(d.count); });
-
-            let lines = svg.append('g')
-              .attr('class', 'lines');
-
-            lines.selectAll('.line-group')
-                .data(data).enter()
-                .append('g')
-                .attr('class', 'line-group')
-                .append('path')
-                .attr('class', 'line')
-                .attr('d', function(d) { return line(d.values); })
-                .style('stroke', (d, i) => color(i));
-
-            lines.selectAll("circle-group")
-                .data(data).enter()
-                .append("g")
-                .selectAll("circle")
-                .data(function(d) { return d.values;}).enter()
-                .append("g")
-                .attr("class", "circle")
-                .append("circle")
-                .attr("cx", function(d) { return x(d.l_month)})
-                .attr("cy", function(d) { return y(d.count)})
-                .attr("r", 3);
-
-            var legend = d3.select(elem[0]).append("div").attr('class','legend');
-
-            var tr = legend.selectAll("div").data(data).enter().append("div");
-
-            tr.append("span").attr('class','legend_col').append("svg").attr("width", '16').attr("height", '16').append("rect")
-                .attr("width", '16').attr("height", '16')
-                .attr("fill",function(d, i){ return color(i) });
-
-            tr.append("span").attr('class','legend_col').text(function(d){ return d.name;});
-        });
-    },
-
-    update_monthly_attrition: function(){
-        var elem = this.$('.attrition_rate');
-        var colors = ['#70cac1', '#659d4e', '#208cc2', '#4d6cb1', '#584999', '#8e559e', '#cf3650', '#f65337', '#fe7139',
-        '#ffa433', '#ffc25b', '#f8e54b'];
-        var color = d3.scale.ordinal().range(colors);
-        rpc.query({
-            model: "res.users",
-            method: "get_attrition_rate",
-        }).then(function (data) {
+            var elem = self.$('.leave_trend');
             var margin = {top: 30, right: 20, bottom: 30, left: 80},
                 width = 500 - margin.left - margin.right,
                 height = 250 - margin.top - margin.bottom;
@@ -703,8 +861,8 @@ var HrDashboard = AbstractAction.extend({
                 .orient("left").ticks(5);
 
             var valueline = d3.svg.line()
-                .x(function(d) { return x(d.month); })
-                .y(function(d) { return y(d.attrition_rate); });
+                .x(function(d) { return x(d.l_month); })
+                .y(function(d) { return y(d.leave); });
 
 
             var svg = d3.select(elem[0]).append("svg")
@@ -713,8 +871,8 @@ var HrDashboard = AbstractAction.extend({
                 .append("g")
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-            x.domain(data.map(function(d) { return d.month; }));
-            y.domain([0, d3.max(data, function(d) { return d.attrition_rate; })]);
+            x.domain(data.map(function(d) { return d.l_month; }));
+            y.domain([0, d3.max(data, function(d) { return d.leave; })]);
 
             // Add the X Axis
             svg.append("g")
@@ -736,8 +894,10 @@ var HrDashboard = AbstractAction.extend({
                 .data(data)
                 .enter().append("circle")
                 .attr("r", 3)
-                .attr("cx", function(d) { return x(d.month); })
-                .attr("cy", function(d) { return y(d.attrition_rate); })
+                .attr("cx", function(d) { return x(d.l_month); })
+                .attr("cy", function(d) { return y(d.leave); })
+//                .on('mouseover', function() { d3.select(this).transition().duration(500).ease("elastic").attr('r', 3 * 2) })
+//                .on('mouseout', function() { d3.select(this).transition().duration(500).ease("in-out").attr('r', 3) });
                 .on("mouseover", function() { tooltip.style("display", null);
                     d3.select(this).transition().duration(500).ease("elastic").attr('r', 3 * 2)
                  })
@@ -748,7 +908,7 @@ var HrDashboard = AbstractAction.extend({
                     var xPosition = d3.mouse(this)[0] - 15;
                     var yPosition = d3.mouse(this)[1] - 25;
                     tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
-                    tooltip.select("text").text(d.attrition_rate);
+                    tooltip.select("text").text(d.leave);
                 });
 
             var tooltip = svg.append("g")
@@ -770,102 +930,6 @@ var HrDashboard = AbstractAction.extend({
 
         });
     },
-
-//     update_leave_trend: function(){
-//         var self = this;
-//         rpc.query({
-//             model: "res.users",
-//             method: "employee_leave_trend",
-//         }).then(function (data) {
-//             var elem = self.$('.leave_trend');
-//             var margin = {top: 30, right: 20, bottom: 30, left: 80},
-//                 width = 500 - margin.left - margin.right,
-//                 height = 250 - margin.top - margin.bottom;
-
-//             // Set the ranges
-//             var x = d3.scale.ordinal()
-//                 .rangeRoundBands([0, width], 1);
-
-//             var y = d3.scale.linear()
-//                 .range([height, 0]);
-
-//             // Define the axes
-//             var xAxis = d3.svg.axis().scale(x)
-//                 .orient("bottom");
-
-//             var yAxis = d3.svg.axis().scale(y)
-//                 .orient("left").ticks(5);
-
-//             var valueline = d3.svg.line()
-//                 .x(function(d) { return x(d.l_month); })
-//                 .y(function(d) { return y(d.leave); });
-
-
-//             var svg = d3.select(elem[0]).append("svg")
-//                 .attr("width", width + margin.left + margin.right)
-//                 .attr("height", height + margin.top + margin.bottom)
-//                 .append("g")
-//                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-//             x.domain(data.map(function(d) { return d.l_month; }));
-//             y.domain([0, d3.max(data, function(d) { return d.leave; })]);
-
-//             // Add the X Axis
-//             svg.append("g")
-//                 .attr("class", "x axis")
-//                 .attr("transform", "translate(0," + height + ")")
-//                 .call(xAxis);
-
-//             // Add the Y Axis
-//             svg.append("g")
-//                 .attr("class", "y axis")
-//                 .call(yAxis);
-
-//             svg.append("path")
-//                 .attr("class", "line")
-//                 .attr("d", valueline(data));
-
-//             // Add the scatterplot
-//             svg.selectAll("dot")
-//                 .data(data)
-//                 .enter().append("circle")
-//                 .attr("r", 3)
-//                 .attr("cx", function(d) { return x(d.l_month); })
-//                 .attr("cy", function(d) { return y(d.leave); })
-// //                .on('mouseover', function() { d3.select(this).transition().duration(500).ease("elastic").attr('r', 3 * 2) })
-// //                .on('mouseout', function() { d3.select(this).transition().duration(500).ease("in-out").attr('r', 3) });
-//                 .on("mouseover", function() { tooltip.style("display", null);
-//                     d3.select(this).transition().duration(500).ease("elastic").attr('r', 3 * 2)
-//                  })
-//                 .on("mouseout", function() { tooltip.style("display", "none");
-//                     d3.select(this).transition().duration(500).ease("in-out").attr('r', 3)
-//                 })
-//                 .on("mousemove", function(d) {
-//                     var xPosition = d3.mouse(this)[0] - 15;
-//                     var yPosition = d3.mouse(this)[1] - 25;
-//                     tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
-//                     tooltip.select("text").text(d.leave);
-//                 });
-
-//             var tooltip = svg.append("g")
-//                   .attr("class", "tooltip")
-//                   .style("display", "none");
-
-//                 tooltip.append("rect")
-//                   .attr("width", 30)
-//                   .attr("height", 20)
-//                   .attr("fill", "black")
-//                   .style("opacity", 0.5);
-
-//                 tooltip.append("text")
-//                   .attr("x", 15)
-//                   .attr("dy", "1.2em")
-//                   .style("text-anchor", "middle")
-//                   .attr("font-size", "12px")
-//                   .attr("font-weight", "bold");
-
-//         });
-//     },
 
     render_leave_graph:function(){
         var self = this;

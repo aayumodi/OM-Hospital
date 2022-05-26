@@ -50,6 +50,10 @@ class Employee(models.Model):
         appointment_ids = self.env['hospital.appoinment'].sudo().search_count([('state','=','confirm')])
         admission_ids = self.env['hospital.patient.admit'].sudo().search_count([])
         invoice_ids = self.env['account.move'].sudo().search_count([])
+        department_ids = self.env['hr.department'].sudo().search_count([])
+        pharmacy_ids = self.env['hospital.pharmacy'].sudo().search_count([])
+        drug_ids = self.env['product.template'].sudo().search_count([('categ_id.name','=', 'Drug')])
+
         admission_request_ids = self.env['hospital.appoinment'].sudo().search_count([('admission_status', '=', 'requested')])
         today_admit_ids = self.env['hospital.appoinment'].sudo().search_count([('admission_status', '=', 'requested'),('created_on','=',today_date)])
         month_admit_ids = self.env['hospital.appoinment'].sudo().search_count([('admission_status','=','requested')])
@@ -77,6 +81,9 @@ class Employee(models.Model):
                     'appoinment_count' : appointment_ids,
                     'admission_count' : admission_ids,
                     'invoice_count' : invoice_ids,
+                    'department_count' : department_ids,
+                    'pharmacy_count' : pharmacy_ids,
+                    'drug_count' : drug_ids,
                     'leaves_to_approve' : admission_request_ids,
                     'leaves_today' : today_admit_ids,
                     'leaves_this_month' : month_admit_ids,
@@ -104,6 +111,7 @@ class Employee(models.Model):
         where (to_char(dob,'ddd')::int-to_char(now(),'DDD')::int+total_days)%total_days between 0 and 15
         order by dif;""")
         birthday = cr.fetchall()
+        # event = self.env['event.event'].search_read([('stage_id.name','=', 'Announced')])
         # e.is_online # was there below
         #        where e.state ='confirm' on line 118/9 #change
         cr.execute("""select e.name, e.date_begin, e.date_end, rc.name as location
@@ -116,6 +124,7 @@ class Employee(models.Model):
         and e.date_begin <= now() + interval '15 day')
         or (e.date_end >= now()
         and e.date_end <= now() + interval '15 day')
+        where e.stage_id = 3
         order by e.date_begin """)
         event = cr.fetchall()
         # announcement = []
@@ -188,46 +197,46 @@ group by hr_employee.department_id,hr_department.name""")
                 'leave': leave
             }
             graph_result.append(vals)
-        sql = """
-        SELECT h.id, h.employee_id,h.department_id
-             , extract('month' FROM y)::int AS leave_month
-             , to_char(y, 'Month YYYY') as month_year
-             , GREATEST(y                    , h.date_from) AS date_from
-             , LEAST   (y + interval '1 month', h.date_to)   AS date_to
-        FROM  (select * from hr_leave where state = 'validate') h
-             , generate_series(date_trunc('month', date_from::timestamp)
-                             , date_trunc('month', date_to::timestamp)
-                             , interval '1 month') y
-        where date_trunc('month', GREATEST(y , h.date_from)) >= date_trunc('month', now()) - interval '6 month' and
-        date_trunc('month', GREATEST(y , h.date_from)) <= date_trunc('month', now())
-        and h.department_id is not null
-        """
-        self.env.cr.execute(sql)
-        results = self.env.cr.dictfetchall()
-        leave_lines = []
-        for line in results:
-            employee = self.browse(line['employee_id'])
-            from_dt = fields.Datetime.from_string(line['date_from'])
-            to_dt = fields.Datetime.from_string(line['date_to'])
-            days = employee.get_work_days_dashboard(from_dt, to_dt)
-            line['days'] = days
-            vals = {
-                'department': line['department_id'],
-                'l_month': line['month_year'],
-                'days': days
-            }
-            leave_lines.append(vals)
-        if leave_lines:
-            df = pd.DataFrame(leave_lines)
-            rf = df.groupby(['l_month', 'department']).sum()
-            result_lines = rf.to_dict('index')
-            for month in month_list:
-                for line in result_lines:
-                    if month.replace(' ', '') == line[0].replace(' ', ''):
-                        match = list(filter(lambda d: d['l_month'] in [month], graph_result))[0]['leave']
-                        dept_name = self.env['hr.department'].browse(line[1]).name
-                        if match:
-                            match[dept_name] = result_lines[line]['days']
+        # sql = """
+        # SELECT h.id, h.employee_id,h.department_id
+        #      , extract('month' FROM y)::int AS leave_month
+        #      , to_char(y, 'Month YYYY') as month_year
+        #      , GREATEST(y                    , h.date_from) AS date_from
+        #      , LEAST   (y + interval '1 month', h.date_to)   AS date_to
+        # FROM  (select * from hr_leave where state = 'validate') h
+        #      , generate_series(date_trunc('month', date_from::timestamp)
+        #                      , date_trunc('month', date_to::timestamp)
+        #                      , interval '1 month') y
+        # where date_trunc('month', GREATEST(y , h.date_from)) >= date_trunc('month', now()) - interval '6 month' and
+        # date_trunc('month', GREATEST(y , h.date_from)) <= date_trunc('month', now())
+        # and h.department_id is not null
+        # """
+        # self.env.cr.execute(sql)
+        # results = self.env.cr.dictfetchall()
+        # leave_lines = []
+        # for line in results:
+        #     employee = self.browse(line['employee_id'])
+        #     from_dt = fields.Datetime.from_string(line['date_from'])
+        #     to_dt = fields.Datetime.from_string(line['date_to'])
+        #     days = employee.get_work_days_dashboard(from_dt, to_dt)
+        #     line['days'] = days
+        #     vals = {
+        #         'department': line['department_id'],
+        #         'l_month': line['month_year'],
+        #         'days': days
+        #     }
+        #     leave_lines.append(vals)
+        # if leave_lines:
+        #     df = pd.DataFrame(leave_lines)
+        #     rf = df.groupby(['l_month', 'department']).sum()
+        #     result_lines = rf.to_dict('index')
+        #     for month in month_list:
+        #         for line in result_lines:
+        #             if month.replace(' ', '') == line[0].replace(' ', ''):
+        #                 match = list(filter(lambda d: d['l_month'] in [month], graph_result))[0]['leave']
+        #                 dept_name = self.env['hr.department'].browse(line[1]).name
+        #                 if match:
+        #                     match[dept_name] = result_lines[line]['days']
         for result in graph_result:
             result['l_month'] = result['l_month'].split(' ')[:1][0].strip()[:3] + " " + \
                                 result['l_month'].split(' ')[1:2][0]
@@ -345,30 +354,30 @@ group by hr_employee.department_id,hr_department.name""")
         AND CURRENT_DATE + interval '1 month - 1 day'
         group by l_month''')
         join_data = cr.fetchall()
-        cr.execute('''select to_char(resign_date, 'Month YYYY') as l_month, count(id) from hr_employee
-        WHERE resign_date BETWEEN CURRENT_DATE - INTERVAL '12 months'
-        AND CURRENT_DATE + interval '1 month - 1 day'
-        group by l_month;''')
-        resign_data = cr.fetchall()
+        # cr.execute('''select to_char(resign_date, 'Month YYYY') as l_month, count(id) from hr_employee
+        # WHERE resign_date BETWEEN CURRENT_DATE - INTERVAL '12 months'
+        # AND CURRENT_DATE + interval '1 month - 1 day'
+        # group by l_month;''')
+        # resign_data = cr.fetchall()
 
         for line in join_data:
             match = list(filter(lambda d: d['l_month'].replace(' ', '') == line[0].replace(' ', ''), join_trend))
             if match:
                 match[0]['count'] = line[1]
-        for line in resign_data:
-            match = list(filter(lambda d: d['l_month'].replace(' ', '') == line[0].replace(' ', ''), resign_trend))
-            if match:
-                match[0]['count'] = line[1]
+        # for line in resign_data:
+        #     match = list(filter(lambda d: d['l_month'].replace(' ', '') == line[0].replace(' ', ''), resign_trend))
+        #     if match:
+        #         match[0]['count'] = line[1]
         for join in join_trend:
             join['l_month'] = join['l_month'].split(' ')[:1][0].strip()[:3]
-        for resign in resign_trend:
-            resign['l_month'] = resign['l_month'].split(' ')[:1][0].strip()[:3]
+        # for resign in resign_trend:
+        #     resign['l_month'] = resign['l_month'].split(' ')[:1][0].strip()[:3]
         graph_result = [{
             'name': 'Join',
             'values': join_trend
         }, {
             'name': 'Resign',
-            'values': resign_trend
+            # 'values': resign_trend
         }]
 
         return graph_result
@@ -377,9 +386,9 @@ group by hr_employee.department_id,hr_department.name""")
     def get_attrition_rate(self):
 
         month_attrition = []
-        monthly_join_resign = self.join_resign_trends()
-        month_join = monthly_join_resign[0]['values']
-        month_resign = monthly_join_resign[1]['values']
+        # monthly_join_resign = self.join_resign_trends()
+        # month_join = monthly_join_resign[0]['values']
+        # month_resign = monthly_join_resign[1]['values']
         sql = """
         SELECT (date_trunc('month', CURRENT_DATE))::date - interval '1' month * s.a AS month_start
         FROM generate_series(0,11,1) AS s(a);"""

@@ -13,8 +13,8 @@
     'description': "Odoo 14 Payroll, Payroll, Odoo 14,Odoo Payroll, Odoo Community Payroll",
     'depends': [
         'hr_contract',
-        'hr_holidays',
-        'hr_contract_types',
+        # 'hr_holidays',
+        # 'hr_contract_types',
     ],
     'data': [
         'security/hr_payroll_security.xml',

@@ -60,7 +60,7 @@
         <field name="arch" type="xml">
             <xpath expr="//group[@name='salary_and_advantages']" position="after">
                 <group string="Monthly Advantages in Cash" name='allowances'>
-                    <label for="hra"/>
+                    <!-- <label for="hra"/>
                     <div class="o_row">
                         <field name="hra" nolabel="1"/>
                         <span>/ month</span>
@@ -93,7 +93,7 @@
 
                         <field name="other_allowance" nolabel="1"/>
                         <span>/ month</span>
-                    </div>
+                    </div> -->
                 </group>
             </xpath>
         </field>

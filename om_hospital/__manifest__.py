@@ -40,7 +40,7 @@
             'views/appoinment_view.xml',
             'views/sale.xml',
             'views/doctor_view.xml',
-            # 'views/smart.xml',
+            'views/smart.xml',
             'views/template.xml',
             'views/doctor_template.xml',
             'views/invoice_template.xml',

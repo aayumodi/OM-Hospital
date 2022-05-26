@@ -7,7 +7,7 @@
         </div>
     </t>
     <t t-name="LoginEmployeeDetails">
-        <link rel="stylesheet" href="/hrms_dashboard/static/src/css/hrms_dashbo.css"/>
+        <link rel="stylesheet" href="/hrms_dashboard/static/src/css/hrms_dashboa.css"/>
         <div class="row main-section">
             <div class="col-md-2 col-sm-2 dummy"></div>
             <div class="col-md-2 col-sm-2 employee-prof">
@@ -126,7 +126,7 @@
                     <div class="oh-card-body">
                         <div class="stat-widget-one">
                             <div class="col-3 stat-icon stat-icon">
-                                <i class="fa fa-stethoscope" aria-label="Info" title="Info"></i>
+                                <i class="fa fa-user-md" aria-label="Info" title="Info"></i>
                             </div>
                             <div class="text-center">
                                 <div class="stat-text"><t t-esc="widget.login_employee['doctor_count']"/> Doctors</div>
@@ -144,7 +144,7 @@
                     <div class="oh-card-body">
                         <div class="stat-widget-one">
                             <div class="col-3 stat-icon stat-icon">
-                                <i class="fa fa-medkit" aria-label="Info" title="Info"></i>
+                                <i class="fa fa-clipboard" aria-label="Info" title="Info"></i>
                             </div>
                             <div class="text-center">
                                 <div class="stat-text"><t t-esc="widget.login_employee['appoinment_count']"/> Appointments</div>
@@ -162,7 +162,7 @@
                     <div class="oh-card-body">
                         <div class="stat-widget-one">
                             <div class="col-3 stat-icon stat-icon">
-                                <i class="fa fa-medkit" aria-label="Info" title="Info"></i>
+                                <i class="fa fa-plus-square" aria-label="Info" title="Info"></i>
                             </div>
                             <div class="text-center">
                                 <div class="stat-text"><t t-esc="widget.login_employee['admission_count']"/> Admission</div>
@@ -292,7 +292,62 @@
                         </div>
                 </div> -->
                 </div>
-                <div class="col-sm-7 col-lg-7">
+                <div class="col-md-2 col-sm-6 hospital_department oh-payslip oh-department">
+                <div class="oh-card">
+                    <div class="oh-card-body">
+                        <div class="stat-widget-one">
+                            <div class="col-3 stat-icon stat-icon">
+                                <i class="fa fa-h-square" aria-label="Info" title="Info"></i>
+                                <!-- <i class="fa-solid fa-clipboard-medical" aria-label="Info" title="Info"></i> -->
+                            </div>
+                            <div class="text-center">
+                                <div class="stat-text"><t t-esc="widget.login_employee['department_count']"/> Departments</div>
+                                <!-- <div class="stat-digit"><t t-esc="widget.login_employee['department_count']"/></div> -->
+                            </div>
+                            <div class="dash-box-action leaves_to_approve">
+                                <button>More Info</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-sm-6 hospital_pharmacy oh-payslip oh-pharmacy">
+                <div class="oh-card">
+                    <div class="oh-card-body">
+                        <div class="stat-widget-one">
+                            <div class="col-3 stat-icon stat-icon">
+                                <i class="fa fa-medkit" aria-label="Info" title="Info"></i>
+                            </div>
+                            <div class="text-center">
+                                <div class="stat-text"><t t-esc="widget.login_employee['pharmacy_count']"/> Pharmacy Order</div>
+                                <!-- <div class="stat-digit"><t t-esc="widget.login_employee['invoice_count']"/></div> -->
+                            </div>
+                            <div class="dash-box-action leaves_to_approve">
+                                <button>More Info</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-sm-6 hospital_drug oh-payslip oh-drugs">
+                <div class="oh-card">
+                    <div class="oh-card-body">
+                        <div class="stat-widget-one">
+                            <div class="col-3 stat-icon stat-icon">
+                                <i class="fa fa-file-text" aria-label="Info" title="Info"></i>
+                            </div>
+                            <div class="text-center">
+                                <div class="stat-text"><t t-esc="widget.login_employee['drug_count']"/> Drugs</div>
+                                <!-- <div class="stat-digit"><t t-esc="widget.login_employee['drug_count']"/></div> -->
+                            </div>
+                            <div class="dash-box-action leaves_to_approve">
+                                <button>More Info</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <!-- <div class="col-sm-7 col-lg-7">
                     <div class="col-sm-12 col-lg-12  graph_view" style="padding:0">
                         <div class="text-color hr-chart-1">
                             <div class="oh-card-body pb-0">
@@ -307,7 +362,7 @@
                             <div class="emp_graph"/>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
             <!-- <div class="row main-section">
                 <div class="col-md-2 col-sm-2 dummy"></div>
