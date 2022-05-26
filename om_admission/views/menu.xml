@@ -3,8 +3,8 @@
     <data>
 
         <menuitem id="menu_admit_root"
-                    name="Patient Admission"
-                    web_icon="om_admission,static/src/img/icon.png"
+                    name="Hospitalization"
+                    web_icon="om_admission,static/src/img/hospital-bed.png"
                     sequence="10"/>
 
         <menuitem id="menu_admission_parent"
