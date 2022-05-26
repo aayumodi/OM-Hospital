@@ -24,6 +24,7 @@
             'security/doctor_security.xml',
             'data/data.xml',
             'data/cron.xml',
+            'data/department_data.xml',
             'wizard/create_appointment_view.xml',
             'wizard/search_appointment_view.xml',
             'wizard/whatsapp_view.xml',
@@ -55,6 +56,7 @@
             # 'views/hospital.xml',
             'views/hospital_page.xml',
             # 'views/about_us.xml',
+            'views/department.xml',
 
             'report/report.xml',
             'report/patient_details_template.xml',
